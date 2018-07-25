@@ -160,3 +160,36 @@ Phoenix é um framework completo para programar web em Elixir. Ele roda usando P
 ## Um projeto para aprender
 
 O projeto é criar um servidor de to-do com uma interface HTTP usando Plug, persistência em SQL usando Ecto, e rodando sob uma árvore de supervisão. Os to-dos devem ser distribuídos entre N servidores. Na prática o SQL será um gargalo, mas o exercício serve do mesmo jeito.
+
+## FAQ
+
+- O que é OTP?
+
+OTP é Open Telecom Platform. É um conjunto de biliotecas (módulos) e abstrações para escrever aplicações distribuídas. Por exemplo, o GenServer é uma abstração de um servidor com um loop principal que pode receber mensagens assíncronas (_casts_), receber e responder mensagens síncronas (_calls_), ser adicionado a uma árvore de supervisão. O GenServer inclui também um lógica para lidar com timeouts.
+
+- Por quê usamos listas e não arrays? Qual a diferença?
+
+Listas são compostas de um primeiro elemento (head) e outra lista (tail):
+
+    [1, 2, 3] == [1|[2|[3]]]
+
+Em em termos de estruturas de dados (& é um ponteiro, informalmente):
+
+    X1 = (1, &X2)
+    X2 = (2, &X3)
+    X3 = (3, NULL)
+
+Arrays tem tamanho fixo e (tipicamente) correspondem a uma região contígua de memória.
+
+O acesso em arrays é mais rápido, basta usar um offset para calcular onde na memória está um elemento.
+
+Em listas precisamos sempre percorrer os ponteiros.
+
+O benefício de listas é que podem mudar de tamanho, representam muito facilmente listas e filas, e suportam pattern-matching. O compilador não consegue fazer pattern-matching em arrays sem saber o tamanho delas de antemão. Além disso, trabalhar recursivamente com listas é muito fácil:
+
+    def sum([]), do: 0
+    def sum([x|xs]) do
+      x + sum(xs)
+    end
+
+Arrays são mais adequadas para computação numérica, mas em Elixir/Erlang sempre estamos mais interessado em performance em redes e I/O em geral. Como é fácil ler o primeiro elemento de listas, não perdemos performance por usá-las.
