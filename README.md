@@ -160,3 +160,9 @@ Phoenix é um framework completo para programar web em Elixir. Ele roda usando P
 ## Um projeto para aprender
 
 O projeto é criar um servidor de to-do com uma interface HTTP usando Plug, persistência em SQL usando Ecto, e rodando sob uma árvore de supervisão. Os to-dos devem ser distribuídos entre N servidores. Na prática o SQL será um gargalo, mas o exercício serve do mesmo jeito.
+
+## FAQ
+
+- O que é OTP?
+
+OTP é Open Telecom Platform. É um conjunto de biliotecas (módulos) e abstrações para escrever aplicações distribuídas. Por exemplo, o GenServer é uma abstração de um servidor com um loop principal que pode receber mensagens assíncronas (_casts_), receber e responder mensagens síncronas (_calls_), ser adicionado a uma árvore de supervisão. O GenServer inclui também um lógica para lidar com timeouts.
