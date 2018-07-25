@@ -1,5 +1,7 @@
 # Curso de Elixir
 
+Na pasta `snippets` vamos colocando exercícios sobre a linguagem.
+
 ## Overview
 
 ### Elixir (Erlang) é uma linguagem com duas partes: a sequencial e a concorrente.
