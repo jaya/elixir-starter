@@ -2,6 +2,10 @@
 
 Na pasta `snippets` vamos colocando exercícios sobre a linguagem.
 
+Para rodar os snippets:
+
+`iex -r <nome do snippet>`
+
 ## Overview
 
 ### Elixir (Erlang) é uma linguagem com duas partes: a sequencial e a concorrente.
@@ -91,6 +95,10 @@ Então se o processo do `loop` travar, o processo que chamou `spawn_link` vai re
 Como os processos não compartilham estado e a VM notifica falhas entre processos, é possível criar árvores de processos que reiniciam os filhos quando eles travam. Como esses processos são levíssimos, Erlang/Elixir são uma ótima linguagem para escrever servidores extremamente escaláveis e de alta disponibilidade.
 
 Por isso o comportamento comum em Erlang é deixar os processos travarem ao invés de escrever código extremamente defensivo.
+
+- Garbage collection e concorrência/alta disponibilidade
+
+Como cada processo tem seu próprio espaço na memória, a coleta de lixo pode ser feita individualmente. Quando um processo passa por coleta de lixo, nenhum outro processo é pausado! A BEAM (a máquina virtual do Elixir) permite portanto coleta de lixo concorrente.
 
 Material de estudo:
 
