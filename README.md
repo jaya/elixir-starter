@@ -92,6 +92,8 @@ Se usarmos `spawn_link`:
 
 Então se o processo do `loop` travar, o processo que chamou `spawn_link` vai receber da VM uma mensagem avisando que o filho travaou.
 
+Nós geralmente não usamos as primitivas de `spawn` nem nos ocupamos muito com código concorrente quando escrevemos alguma serviço web. As bibliotecas de HTTP (como Plug) já cuidam da concorrência do servidor, gerenciando um pool de processos para cuidar dos requests. A parte do código que escrevemos em geral já está dentro de alguma abstração de concorrência.
+
 Como os processos não compartilham estado e a VM notifica falhas entre processos, é possível criar árvores de processos que reiniciam os filhos quando eles travam. Como esses processos são levíssimos, Erlang/Elixir são uma ótima linguagem para escrever servidores extremamente escaláveis e de alta disponibilidade.
 
 Por isso o comportamento comum em Erlang é deixar os processos travarem ao invés de escrever código extremamente defensivo.
