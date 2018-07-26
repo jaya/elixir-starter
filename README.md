@@ -6,6 +6,12 @@ Para rodar os snippets:
 
 `iex -r <nome do snippet>`
 
+## Talks
+
+Vamos colocar aqui uma lista de talks sobre Elixir, Phoenix e OTP.
+
+Tem alguns especialmente bons do Valim sobre Elixir, Ecto e Phoenix.
+
 ## Overview
 
 ### Elixir (Erlang) é uma linguagem com duas partes: a sequencial e a concorrente.
