@@ -36,33 +36,30 @@ Como não há mutação de valores, quando dois processos são chamados com o me
 
 Material de estudo para pegar o básico de como escrever código bem simples:
 
-- Para começar (são páginas pequenas):
+Para começar (são páginas pequenas):
 
-https://elixir-lang.org/getting-started/introduction.html
-https://elixir-lang.org/getting-started/basic-types.html
-https://elixir-lang.org/getting-started/basic-operators.html
-https://elixir-lang.org/getting-started/pattern-matching.html
-https://elixir-lang.org/getting-started/case-cond-and-if.html
-https://elixir-lang.org/getting-started/keywords-and-maps.html
-https://elixir-lang.org/getting-started/modules-and-functions.html
-https://elixir-lang.org/getting-started/try-catch-and-rescue.html
+- https://elixir-lang.org/getting-started/introduction.html
+- https://elixir-lang.org/getting-started/basic-types.html
+- https://elixir-lang.org/getting-started/basic-operators.html
+- https://elixir-lang.org/getting-started/pattern-matching.html
+- https://elixir-lang.org/getting-started/case-cond-and-if.html
+- https://elixir-lang.org/getting-started/keywords-and-maps.html
+- https://elixir-lang.org/getting-started/modules-and-functions.html
+- https://elixir-lang.org/getting-started/try-catch-and-rescue.html
+- https://elixirschool.com/en/lessons/basics/basics/
+- https://elixirschool.com/en/lessons/basics/collections/
+- https://elixirschool.com/en/lessons/basics/pattern-matching/
+- https://elixirschool.com/en/lessons/basics/control-structures/
+- https://elixirschool.com/en/lessons/basics/pipe-operator/
+- https://elixirschool.com/en/lessons/basics/modules/
+- https://elixirschool.com/en/lessons/advanced/error-handling/
 
-https://elixirschool.com/en/lessons/basics/basics/
-https://elixirschool.com/en/lessons/basics/collections/
-https://elixirschool.com/en/lessons/basics/pattern-matching/
-https://elixirschool.com/en/lessons/basics/control-structures/
-https://elixirschool.com/en/lessons/basics/pipe-operator/
-https://elixirschool.com/en/lessons/basics/modules/
+Se der tempo...
 
-https://elixirschool.com/en/lessons/advanced/error-handling/
-
-- Se der tempo...
-
-https://elixir-lang.org/getting-started/enumerables-and-streams.html
-https://elixir-lang.org/getting-started/recursion.html
-https://elixir-lang.org/getting-started/module-attributes.html
-https://elixir-lang.org/getting-started/structs.html
-
+- https://elixir-lang.org/getting-started/enumerables-and-streams.html
+- https://elixir-lang.org/getting-started/recursion.html
+- https://elixir-lang.org/getting-started/module-attributes.html
+- https://elixir-lang.org/getting-started/structs.html
 
 #### A linguagem concorrente
 
@@ -74,13 +71,15 @@ Os processos não tem estado no sentido comum. Quando iniciamos um processo nós
 
 Por exemplo, um pequeno servidor se parece com:
 
-    def loop(state) do
-      receive do
-        {:set, value} -> loop(value)
-        {:get, sender} -> send sender, state; loop(state)
-        other -> Logger.info("Couldn't understand; #{other}"); loop(state)
-      end
-    end
+```elixir
+def loop(state) do
+  receive do
+    {:set, value} -> loop(value)
+    {:get, sender} -> send sender, state; loop(state)
+    other -> Logger.info("Couldn't understand; #{other}"); loop(state)
+  end
+end
+```
 
 Outros processos não podem afetar `state`; eles podem mandar mensagens para o processo rodando `loop`, mas não há estado compartilhado.
 
@@ -110,48 +109,47 @@ Como cada processo tem seu próprio espaço na memória, a coleta de lixo pode s
 
 Material de estudo:
 
-https://elixir-lang.org/getting-started/processes.html
-https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
-https://elixir-lang.org/getting-started/mix-otp/agent.html
-https://elixir-lang.org/getting-started/mix-otp/genserver.html
-https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html
-
-https://elixirschool.com/en/lessons/advanced/concurrency/
-https://elixirschool.com/en/lessons/advanced/otp-concurrency/
-https://elixirschool.com/en/lessons/advanced/otp-supervisors/
-https://elixirschool.com/en/lessons/advanced/behaviours/
+- https://elixir-lang.org/getting-started/processes.html
+- https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
+- https://elixir-lang.org/getting-started/mix-otp/agent.html
+- https://elixir-lang.org/getting-started/mix-otp/genserver.html
+- https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html
+- https://elixirschool.com/en/lessons/advanced/concurrency/
+- https://elixirschool.com/en/lessons/advanced/otp-concurrency/
+- https://elixirschool.com/en/lessons/advanced/otp-supervisors/
+- https://elixirschool.com/en/lessons/advanced/behaviours/
 
 #### Ferramentas
 
 O tooling para Elixir é bastante completo.
 
-- IEx: REPL (read-eval-print-loop) para Elixir.
+##### IEx: REPL (read-eval-print-loop) para Elixir.
 
-https://elixirschool.com/en/lessons/basics/iex-helpers
-https://elixir-lang.org/getting-started/debugging.html
+- https://elixirschool.com/en/lessons/basics/iex-helpers
+- https://elixir-lang.org/getting-started/debugging.html
 
-- Mix: Projetos/build
+##### Mix: Projetos/build
 
-https://elixirschool.com/en/lessons/basics/mix/
-https://elixirschool.com/en/lessons/basics/mix-tasks/
+- https://elixirschool.com/en/lessons/basics/mix/
+- https://elixirschool.com/en/lessons/basics/mix-tasks/
 
-- Hex: Package manager
+##### Hex: Package manager
 
-- ExUnit: Framework de testes unitários
+##### ExUnit: Framework de testes unitários
 
-https://elixirschool.com/en/lessons/basics/testing/
+- https://elixirschool.com/en/lessons/basics/testing/
 
-- ExDoc: Framework para gerar documentação
+##### ExDoc: Framework para gerar documentação
 
-https://elixirschool.com/en/lessons/basics/documentation/
+- https://elixirschool.com/en/lessons/basics/documentation/
 
-Material de estudo:
+#### Material de estudo:
 
-#### Bibliotecas importantes
+##### Bibliotecas importantes
 
 Existem algumas bibliotecas de uso comum em Elixir para projetos web.
 
-- Plug
+###### Plug
 
 Plug é uma biblioteca para escrever servidores de HTTP. Os "plugs" são juntados num pipeline que processa um request. Por exemplo um plug faz o parsing do corpo do request, outro valida parâmetros, outro faz a lógica de negócio, outro roteia a request para módulos específicos.
 
@@ -159,17 +157,16 @@ No final do pipeline, um plug simplesmente retorna um objeto com a resposta que 
 
 O plug faz apenas a lógica para cima do HTTP; o HTTP em si é gerenciado por uma biblioteca que não usamos diretamente, a Cowboy, que por sua vez roda por cima do Ranch, que gerencia recursos de rede junto ao sistema operacional.
 
-https://elixirschool.com/en/lessons/specifics/plug/
-https://github.com/elixir-plug/plug
+- https://elixirschool.com/en/lessons/specifics/plug/
+- https://github.com/elixir-plug/plug
 
-- Ecto
+###### Ecto
 
 Ecto é o ORM do Elixir. Com o Ecto podemos escrever migrações, definir modelos sobre tabelas de bancos de dados, e realizar consultas e alterações nos bancos. Mas o Plug não trabalha com ActiveRecords como Rails. Ele trabalha com o Repository Pattern, mais comum em Java e .NET.
 
-https://elixirschool.com/en/lessons/specifics/ecto/
+- https://elixirschool.com/en/lessons/specifics/ecto/
 
-
-- Phoenix
+###### Phoenix
 
 Phoenix é um framework completo para programar web em Elixir. Ele roda usando Plugs, mas traz o tipo de conveniência do Rails: controllers, autenticação, cache, session management, views, live code reloading, etc. Sobre usar Plug ou Phoenix depende muito do tipo de aplicação. O Plug é suficiente para muita coisa.
 
@@ -179,21 +176,25 @@ O projeto é criar um servidor de to-do com uma interface HTTP usando Plug, pers
 
 ## FAQ
 
-- O que é OTP?
+### O que é OTP?
 
 OTP é Open Telecom Platform. É um conjunto de biliotecas (módulos) e abstrações para escrever aplicações distribuídas. Por exemplo, o GenServer é uma abstração de um servidor com um loop principal que pode receber mensagens assíncronas (_casts_), receber e responder mensagens síncronas (_calls_), ser adicionado a uma árvore de supervisão. O GenServer inclui também um lógica para lidar com timeouts.
 
-- Por quê usamos listas e não arrays? Qual a diferença?
+### Por quê usamos listas e não arrays? Qual a diferença?
 
 Listas são compostas de um primeiro elemento (head) e outra lista (tail):
 
-    [1, 2, 3] == [1|[2|[3]]]
+```elixir
+[1, 2, 3] == [1|[2|[3]]]
+```
 
 Em em termos de estruturas de dados (& é um ponteiro, informalmente):
 
-    X1 = (1, &X2)
-    X2 = (2, &X3)
-    X3 = (3, NULL)
+```elixir
+X1 = (1, &X2)
+X2 = (2, &X3)
+X3 = (3, NULL)
+```
 
 Arrays tem tamanho fixo e (tipicamente) correspondem a uma região contígua de memória.
 
@@ -203,9 +204,11 @@ Em listas precisamos sempre percorrer os ponteiros.
 
 O benefício de listas é que podem mudar de tamanho, representam muito facilmente listas e filas, e suportam pattern-matching. O compilador não consegue fazer pattern-matching em arrays sem saber o tamanho delas de antemão. Além disso, trabalhar recursivamente com listas é muito fácil:
 
-    def sum([]), do: 0
-    def sum([x|xs]) do
-      x + sum(xs)
-    end
+```elixir
+def sum([]), do: 0
+def sum([x|xs]) do
+  x + sum(xs)
+end
+```
 
 Arrays são mais adequadas para computação numérica, mas em Elixir/Erlang sempre estamos mais interessado em performance em redes e I/O em geral. Como é fácil ler o primeiro elemento de listas, não perdemos performance por usá-las.
