@@ -52,4 +52,4 @@
 
 - [ ] Do the exercice number 10: https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
 
-TODO: Something to learn Protocols and Comprehensions
+TODO: Something to learn Protocols and Comprehensions / Background Jobs
