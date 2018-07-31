@@ -85,15 +85,19 @@ Outros processos não podem afetar `state`; eles podem mandar mensagens para o p
 
 Para iniciar um processo que rode a função `loop` com estado inicial `0` basta:
 
-    spawn fn ->
-      loop(0)
-    end
+```elixir
+spawn fn ->
+  loop(0)
+end
+```
 
 Se usarmos `spawn_link`:
 
-    spawn_link fn ->
-      loop(0)
-    end
+```elixir
+spawn_link fn ->
+  loop(0)
+end
+```
 
 Então se o processo do `loop` travar, o processo que chamou `spawn_link` vai receber da VM uma mensagem avisando que o filho travaou.
 
@@ -103,7 +107,7 @@ Como os processos não compartilham estado e a VM notifica falhas entre processo
 
 Por isso o comportamento comum em Erlang é deixar os processos travarem ao invés de escrever código extremamente defensivo.
 
-- Garbage collection e concorrência/alta disponibilidade
+### Garbage collection e concorrência/alta disponibilidade
 
 Como cada processo tem seu próprio espaço na memória, a coleta de lixo pode ser feita individualmente. Quando um processo passa por coleta de lixo, nenhum outro processo é pausado! A BEAM (a máquina virtual do Elixir) permite portanto coleta de lixo concorrente.
 
@@ -119,37 +123,37 @@ Material de estudo:
 - https://elixirschool.com/en/lessons/advanced/otp-supervisors/
 - https://elixirschool.com/en/lessons/advanced/behaviours/
 
-#### Ferramentas
+### Ferramentas
 
 O tooling para Elixir é bastante completo.
 
-##### IEx: REPL (read-eval-print-loop) para Elixir.
+#### IEx: REPL (read-eval-print-loop) para Elixir.
 
 - https://elixirschool.com/en/lessons/basics/iex-helpers
 - https://elixir-lang.org/getting-started/debugging.html
 
-##### Mix: Projetos/build
+#### Mix: Projetos/build
 
 - https://elixirschool.com/en/lessons/basics/mix/
 - https://elixirschool.com/en/lessons/basics/mix-tasks/
 
-##### Hex: Package manager
+#### Hex: Package manager
 
-##### ExUnit: Framework de testes unitários
+#### ExUnit: Framework de testes unitários
 
 - https://elixirschool.com/en/lessons/basics/testing/
 
-##### ExDoc: Framework para gerar documentação
+#### ExDoc: Framework para gerar documentação
 
 - https://elixirschool.com/en/lessons/basics/documentation/
 
-#### Material de estudo:
+### Material de estudo:
 
-##### Bibliotecas importantes
+#### Bibliotecas importantes
 
 Existem algumas bibliotecas de uso comum em Elixir para projetos web.
 
-###### Plug
+##### Plug
 
 Plug é uma biblioteca para escrever servidores de HTTP. Os "plugs" são juntados num pipeline que processa um request. Por exemplo um plug faz o parsing do corpo do request, outro valida parâmetros, outro faz a lógica de negócio, outro roteia a request para módulos específicos.
 
@@ -160,13 +164,13 @@ O plug faz apenas a lógica para cima do HTTP; o HTTP em si é gerenciado por um
 - https://elixirschool.com/en/lessons/specifics/plug/
 - https://github.com/elixir-plug/plug
 
-###### Ecto
+##### Ecto
 
 Ecto é o ORM do Elixir. Com o Ecto podemos escrever migrações, definir modelos sobre tabelas de bancos de dados, e realizar consultas e alterações nos bancos. Mas o Plug não trabalha com ActiveRecords como Rails. Ele trabalha com o Repository Pattern, mais comum em Java e .NET.
 
 - https://elixirschool.com/en/lessons/specifics/ecto/
 
-###### Phoenix
+##### Phoenix
 
 Phoenix é um framework completo para programar web em Elixir. Ele roda usando Plugs, mas traz o tipo de conveniência do Rails: controllers, autenticação, cache, session management, views, live code reloading, etc. Sobre usar Plug ou Phoenix depende muito do tipo de aplicação. O Plug é suficiente para muita coisa.
 
