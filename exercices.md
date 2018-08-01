@@ -84,8 +84,10 @@ POST /todos
 { "error": "task already completed"}
 ```
 
-8) Extract all the request handling to a GenServer that will process the request async.
+8)  Extract all the request handling to a Process that will process the request async.
 
-9) Add Supervision to the Application
+9) Extract all the request handling to a GenServer that will process the request async.
 
-10) Unit & Integration tests
+10) Add Supervision to the Application
+
+11) Unit & Integration tests
