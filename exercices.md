@@ -84,10 +84,8 @@ POST /todos
 { "error": "task already completed"}
 ```
 
-8) Unit & Integration tests
+8) Extract all the request handling to a GenServer that will process the request async.
 
-9) Refactor: Delegate the request handling to different otp processes with load balancing
+9) Add Supervision to the Application
 
-10) Refactor: Use ecto instead of an agent to persist the TODO
-
-11) Use Phoenix instead of pure Plug
+10) Unit & Integration tests
