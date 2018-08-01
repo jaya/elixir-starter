@@ -36,6 +36,7 @@
 8) GenServer
 
 - [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/genserver.html
+- [ ] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 
 9) Test App Exercices
 
@@ -43,7 +44,6 @@
 
 10) Supervision
 
-- [ ] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 - [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html
 
 11) Test App Exercices
