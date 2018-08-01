@@ -20,7 +20,7 @@
 
 5) Start Test App
 
-- [ ] Do exercice 1, 2 => https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do exercice 1, 2 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 6) Process & Agent
 
@@ -30,7 +30,7 @@
 
 7) Test App Exercicies
 
-- [ ] Do exercices 3 to 7 => https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do exercices 3 to 7 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 8) GenServer
 
@@ -46,10 +46,10 @@
 
 11) Test App Exercices
 
-- [ ] Do the exercice number 9: https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do the exercice number 9: https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 12) Unit Test
 
-- [ ] Do the exercice number 10: https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do the exercice number 10: https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 TODO: Something to learn Protocols and Comprehensions / Background Jobs
