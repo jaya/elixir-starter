@@ -17,10 +17,11 @@
 4) Intro Plug
 
 - [ ] Read https://elixirschool.com/en/lessons/specifics/plug/
+- [ ] Take a look https://github.com/devinus/poison
 
 5) Start Test App
 
-- [ ] Do exercice 1, 2 => https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do exercice 1, 2 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 6) Process & Agent
 
@@ -30,11 +31,12 @@
 
 7) Test App Exercicies
 
-- [ ] Do exercices 3 to 7 => https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do exercices 3 to 7 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 8) GenServer
 
 - [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/genserver.html
+- [ ] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 
 9) Test App Exercices
 
@@ -46,10 +48,10 @@
 
 11) Test App Exercices
 
-- [ ] Do the exercice number 9: https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do the exercice number 9: https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 12) Unit Test
 
-- [ ] Do the exercice number 10: https://github.com/jaya/elixir-starter/blob/master/exercices/Exercices.md
+- [ ] Do the exercice number 10: https://github.com/jaya/elixir-starter/blob/master/exercices.md
 
 TODO: Something to learn Protocols and Comprehensions / Background Jobs
