@@ -17,6 +17,7 @@
 4) Intro Plug
 
 - [ ] Read https://elixirschool.com/en/lessons/specifics/plug/
+- [ ] Take a look https://github.com/devinus/poison
 
 5) Start Test App
 
@@ -42,6 +43,7 @@
 
 10) Supervision
 
+- [ ] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 - [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html
 
 11) Test App Exercices
