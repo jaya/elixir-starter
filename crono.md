@@ -11,12 +11,13 @@
 - [ ] Do the koans 1-15 => https://github.com/elixirkoans/elixir-koans
 
 
-3) MIX & OTP
+3) Pure OTP Exercices (WIP)
+
+4) MIX & OTP
 
 - [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
 - [ ] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
 
-4) Pure OTP Exercices (WIP)
 
 5) TODO List with Plug + OTP App
 
