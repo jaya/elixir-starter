@@ -2,7 +2,7 @@
 
 1) Documentary
 
-- [ ] Watch http://doc.honeypot.io/elixir-documentary-2018/
+- [x] Watch http://doc.honeypot.io/elixir-documentary-2018/
 
 2) Getting started
 
