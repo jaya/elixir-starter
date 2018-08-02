@@ -8,7 +8,7 @@
 
 - [ ] Do all examples from 1 to 15 => https://elixir-lang.org/getting-started/introduction.html
 
-- [ ] Do the koans 1-14 => https://github.com/elixirkoans/elixir-koans
+- [ ] Do the koans 1-15 => https://github.com/elixirkoans/elixir-koans
 
 
 3) MIX & OTP
