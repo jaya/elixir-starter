@@ -17,3 +17,9 @@
 - [ ] Do the koans 15-17 => https://github.com/elixirkoans/elixir-koans
 
 4) OTP Exercices (WIP)
+
+5) Phoenix Course
+
+- [ ] Perform the course: https://www.udemy.com/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/
+
+6) Project
