@@ -16,10 +16,12 @@
 - [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
 - [ ] Do the koans 15-17 => https://github.com/elixirkoans/elixir-koans
 
-4) OTP Exercices (WIP)
+4) Plug + OTP App
 
-5) Phoenix Course
+5) OTP Exercices (WIP)
+
+6) Phoenix Course
 
 - [ ] Perform the course: https://www.udemy.com/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/
 
-6) Project
+7) Final Project
