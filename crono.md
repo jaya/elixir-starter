@@ -16,7 +16,7 @@
 - [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
 - [ ] Do the koans 15-17 => https://github.com/elixirkoans/elixir-koans
 
-4) OTP Exercices (WIP)
+4) Pure OTP Exercices (WIP)
 
 5) TODO List with Plug + OTP App
 
