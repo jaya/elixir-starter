@@ -10,48 +10,17 @@
 
 - [x] Do the koans 1-15 => https://github.com/elixirkoans/elixir-koans
 
-3) Intro Mix
+3) Pure OTP Exercices (WIP)
 
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#our-first-project
+- [ ] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
 
-4) Intro Plug
+4) MIX & OTP
 
-- [ ] Read https://elixirschool.com/en/lessons/specifics/plug/
-- [ ] Take a look https://github.com/devinus/poison
+- [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
+- [ ] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
 
-5) Start Test App
+6) Phoenix Course
 
-- [ ] Do exercice 1, 2 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
+- [ ] Perform the course: https://www.udemy.com/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/
 
-6) Process & Agent
-
-- [ ] Do Examples: https://elixir-lang.org/getting-started/processes.html
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/agent.html
-- [ ] Do the koans 15-17 => https://github.com/elixirkoans/elixir-koans
-
-7) Test App Exercicies
-
-- [ ] Do exercices 3 to 7 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
-
-8) GenServer
-
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/genserver.html
-- [ ] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
-
-9) Test App Exercices
-
-- [ ] Do the exercice number 8
-
-10) Supervision
-
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html
-
-11) Test App Exercices
-
-- [ ] Do the exercice number 9: https://github.com/jaya/elixir-starter/blob/master/exercices.md
-
-12) Unit Test
-
-- [ ] Do the exercice number 10: https://github.com/jaya/elixir-starter/blob/master/exercices.md
-
-TODO: Something to learn Protocols and Comprehensions / Background Jobs
+7) Final Project
