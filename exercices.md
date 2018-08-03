@@ -31,6 +31,7 @@ TODO.complete("md5-943jg4938j39")
 ```ex
 TODO.add(%{ title: "study otp", completed: false })
 => %{ id: "md5-943jg4938j39", title: "study otp", completed: false,  created_at:"2018-10-02" }
+
 TODO.add(%{ title: "study otp", completed: false })
 => { error: "task already created"}
 ```
@@ -40,6 +41,7 @@ TODO.add(%{ title: "study otp", completed: false })
 ```ex
 TODO.complete("md5-943jg4938j39")
 => { id: "md5-943jg4938j39", title: "study otp", completed: true, created_at: "2018-10-03", completed_at:"2018-10-03" }
+
 TODO.complete("md5-943jg4938j39")
 => { error: "task already completed"}
 ```
