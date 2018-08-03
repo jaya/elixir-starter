@@ -8,50 +8,24 @@
 
 - [ ] Do all examples from 1 to 15 => https://elixir-lang.org/getting-started/introduction.html
 
-- [ ] Do the koans 1-14 => https://github.com/elixirkoans/elixir-koans
+- [ ] Do the koans 1-15 => https://github.com/elixirkoans/elixir-koans
 
-3) Intro Mix
 
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html#our-first-project
+3) Pure OTP Exercices (WIP)
 
-4) Intro Plug
+- [ ] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
 
-- [ ] Read https://elixirschool.com/en/lessons/specifics/plug/
-- [ ] Take a look https://github.com/devinus/poison
+4) MIX & OTP
 
-5) Start Test App
-
+- [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
+- [ ] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
 - [ ] Do exercise 1, 2 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
-
-6) Process & Agent
-
 - [ ] Do Examples: https://elixir-lang.org/getting-started/processes.html
 - [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/agent.html
 - [ ] Do the koans 15-17 => https://github.com/elixirkoans/elixir-koans
 
-7) Test App Exercises
+5) Phoenix Course
 
-- [ ] Do exercices 3 to 7 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
+- [ ] Perform the course: https://www.udemy.com/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/
 
-8) GenServer
-
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/genserver.html
-- [ ] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
-
-9) Test App Exercises
-
-- [ ] Do the exercise number 8
-
-10) Supervision
-
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html
-
-11) Test App Exercices
-
-- [ ] Do the exercise number 9: https://github.com/jaya/elixir-starter/blob/master/exercices.md
-
-12) Unit Test
-
-- [ ] Do the exercise number 10: https://github.com/jaya/elixir-starter/blob/master/exercices.md
-
-TODO: Something to learn Protocols and Comprehensions / Background Jobs
+6) Final Project
