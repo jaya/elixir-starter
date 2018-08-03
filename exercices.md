@@ -13,10 +13,7 @@ TODO.add(%{ title: "study otp", completed: false })
 
 ```ex
 TODO.list
-=> [
-  %{ id: "md5-943jg4938j39", title: "learn elixir", completed: false },
-  %{ id: "md5-f0932jf934", title: "study otp", completed: false }
-]
+=> [ %{ id: "md5-f0932jf934", title: "study otp", completed: false } ]
 ```
 
 3) Mark todo as completed
