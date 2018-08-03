@@ -21,4 +21,8 @@ defmodule Cap7KeywordListAndMapsTest do
   test "get first" do
     assert Cap7KeywordListAndMaps.get(:a, [a: 1, a: 2, b: 2]) == 1
   end
+
+  test "update an item on map" do
+    assert Cap7KeywordListAndMaps.update_map(%{:one => 1, 2 => :three}) == %{:one => 1, 2 => :two}
+  end
 end

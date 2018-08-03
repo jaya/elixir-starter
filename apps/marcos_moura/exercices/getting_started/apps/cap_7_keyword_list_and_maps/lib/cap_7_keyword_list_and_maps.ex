@@ -72,4 +72,8 @@ defmodule Cap7KeywordListAndMaps do
   def map_to_list(map) do
     Map.to_list(map)
   end
+
+  def update_map(values) do
+    %{ values | 2 => :two}
+  end
 end
