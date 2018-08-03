@@ -1,93 +1,51 @@
-Elixir Exercices
+Pure OTP Exercise
 
-1) Create a plug server with a simple endpoint that returns 200 status code for all requests:
+Create a todo list using only pure processes
 
-```
-GET localhost/hello
-```
+1) Add a todo to a todo-list
 
-```
-200
-hello word
+```ex
+TODO.add(%{ title: "study otp", completed: false })
+%{ id: "md5-943jg4938j39", title: "study otp", completed: false,  created_at:"2018-10-02" }
 ```
 
-2) Return json on the response
+2) List todos
 
-```
-GET localhost:4000/hello
-```
-
-```json
-200
-{ "result": "hello world" }
-```
-
-3) Add a todo to a todo-list saved on an agent
-
-```json
-POST /todos
-{ "title": "study otp", "completed": false }
-```
-
-```json
-201
-{ "id": "md5-943jg4938j39", "title": "study otp", "completed": false, "created_at":"2018-10-02" }
-```
-
-4) Show todo list
-
-```json
-GET /todos
-```
-
-```json
-200
+```ex
+TODO.list
 [
-  { "id": "md5-943jg4938j39", "title": "learn elixir", "completed": false },
-  { "id": "md5-f0932jf934", "title": "study otp", "completed": false }
+  %{ id: "md5-943jg4938j39", title: "learn elixir", completed: false },
+  %{ id: "md5-f0932jf934", title: "study otp", completed: false }
 ]
 ```
 
-5) Mark task as completed
+3) Mark todo as completed
 
-``` json
-PATCH /todos/md5-943jg4938j39
-{ "completed": true }
+```ex
+TODO.complete("md5-943jg4938j39")
+{ id: "md5-943jg4938j39", title: "study otp", completed: true, created_at: "2018-10-03", completed_at:"2018-10-03" }
 ```
+
+4) Add validation to not allow duplicated todos titles
+
+```ex
+TODO.add(%{ title: "study otp", completed: false })
+%{ id: "md5-943jg4938j39", title: "study otp", completed: false,  created_at:"2018-10-02" }
+TODO.add(%{ title: "study otp", completed: false })
+{ error: "task already created"}
+```
+
+5) Add validation to not allow completion on already completed tasks
 
 ```json
-200
-{ "id": "md5-943jg4938j39", "title": "study otp", "completed": true, "created_at":"2018-10-03", "completed_at":"2018-10-03" }
+TODO.complete("md5-943jg4938j39")
+{ id: "md5-943jg4938j39", title: "study otp", completed: true, created_at: "2018-10-03", completed_at:"2018-10-03" }
+TODO.complete("md5-943jg4938j39")
+{ error: "task already completed"}
 ```
 
-6) Add validation to not allow duplicated tasks titles
+6) Add Supervision to the Application
 
-```json
-# assuming 'study otp' already exists
-POST /todos
-{ "title": "study otp", "completed": false }
-```
-```json
-409
-{ "error": "task already created"}
-```
+When the todo process crashes it will be restarted automatically
 
-7) Add validation to not allow completion on already completed tasks
-
-```json
-# assuming 'study otp' is already completed
-POST /todos
-{ "title": "study otp", "completed": true }
-```
-```json
-400
-{ "error": "task already completed"}
-```
-
-8)  Extract all the request handling to a Process that will process the request async.
-
-9) Extract all the request handling to a GenServer that will process the request async.
-
-10) Add Supervision to the Application
-
-11) Unit & Integration tests
+7) Tests
