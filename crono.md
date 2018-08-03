@@ -13,6 +13,8 @@
 
 3) Pure OTP Exercices (WIP)
 
+- Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
+
 4) MIX & OTP
 
 - [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
