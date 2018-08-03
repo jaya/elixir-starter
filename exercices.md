@@ -43,8 +43,6 @@ TODO.complete("md5-943jg4938j39")
 => %{ error: "task already completed"}
 ```
 
-6) Add Supervision to the Application
-
-When the todo process crashes it will be restarted automatically
+6) Add Supervision to the Application, when the todo process crashes it will be restarted automatically
 
 7) Tests
