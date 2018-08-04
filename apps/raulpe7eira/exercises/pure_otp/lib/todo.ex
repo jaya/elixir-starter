@@ -2,17 +2,8 @@ defmodule TODO do
   @moduledoc """
   """
 
-  @enforce_keys [
-    :title,
-    :completed
-  ]
-  defstruct [
-    :id,
-    :title,
-    :completed,
-    :created_at,
-    :completed_at
-  ]
+  @enforce_keys [:title, :completed]
+  defstruct [:id, :title, :completed, :created_at, :completed_at]
 
   @doc """
   """
@@ -23,8 +14,8 @@ defmodule TODO do
   defp do_add(%{title: title, completed: completed}) do
     send PID_TODO, {:add, self(), title, completed}
     receive do
-      todo -> filter_nil_value todo
-    after 5 -> "ops... I don't no know where I am"
+      todo -> render_by_action {:add, todo}
+    after 3000 -> "ops... I forgot to add"
     end
   end
   defp do_add(%{completed: _completed}), do:
@@ -37,7 +28,11 @@ defmodule TODO do
   @doc """
   """
   def list do
-    # nothing to do yet.
+    send PID_TODO, {:list, self()}
+    receive do
+      todo_list -> render_by_action {:list, todo_list}
+    after 3000 -> "ops... I forgot to list"
+    end
   end
 
   @doc """
@@ -72,7 +67,8 @@ defmodule TODO do
         send caller, todo
         service_loop([todo | todo_list])
 
-      {:list, _caller} ->
+      {:list, caller} ->
+        send caller, todo_list
         service_loop(todo_list)
 
       {:complete, _caller} ->
@@ -96,10 +92,19 @@ defmodule TODO do
     |> Date.to_string
   end
 
-  defp filter_nil_value(struct) when is_map(struct) do
+  defp render_by_action({:add, struct}) when is_map(struct) do
     struct
+    |> filter_by_keys([:completed_at])
+  end
+  defp render_by_action({:list, todo_list}) when is_list(todo_list) do
+    todo_list
+    |> Enum.map(&(&1 |> filter_by_keys([:created_at, :completed_at])))
+  end
+
+  defp filter_by_keys(map, filter_keys) when is_map(map) and is_list(filter_keys) do
+    map
     |> Map.from_struct
-    |> Enum.filter(fn {_key, value} -> value != nil end)
+    |> Enum.filter(fn {key, _value} -> key not in filter_keys end)
     |> Enum.into(%{})
   end
 end
