@@ -11,7 +11,8 @@ defmodule StateTest do
   test "put" do
     {:ok, pid} = start_link()
     send(pid, {:put, 0, :one})
-    value = send(pid, {:get, 0, self()})
-    assert value == {:get, 0, self()}
+    send(pid, {:get, 0, self()})
+
+    assert_receive :one
   end
 end
