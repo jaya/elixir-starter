@@ -14,7 +14,7 @@ defmodule TODO do
   end
 
   defp init do
-    pid = spawn_link __MODULE__, :service_loop, [[]] 
+    pid = spawn_link __MODULE__, :receiving_requests, [[]] 
     Process.register pid, TODO_PID
   end
 
@@ -26,7 +26,7 @@ defmodule TODO do
 
   defp do_add(%{title: title, completed: completed}) do
     is_not_created_task(title, fn _response ->
-      call_service(:add, self(), [title, completed])
+      send_request(:add, self(), [title, completed])
     end)
   end
   defp do_add(%{completed: _completed}), do:
@@ -37,36 +37,36 @@ defmodule TODO do
     "ops... title and completed is required"
 
   defp is_not_created_task(title, callback) do
-    call_service(:check_created, self(), [title], callback)
+    send_request(:check_created, self(), [title], callback)
   end
 
   @doc """
   """
   def list do
-    call_service(:list, self())
+    send_request(:list, self())
   end
 
   @doc """
   """
   def complete(id_item) do
     is_not_completed_task(id_item, fn _response ->
-      call_service(:complete, self(), [id_item])
+      send_request(:complete, self(), [id_item])
     end)
   end
 
   defp is_not_completed_task(id_item, callback) do
-    call_service(:check_completed, self(), [id_item], callback)
+    send_request(:check_completed, self(), [id_item], callback)
   end
 
-  defp call_service(action, caller) do
+  defp send_request(action, caller) do
     send TODO_PID, {action, caller}
     receive_response(action)
   end
-  defp call_service(action, caller, params) do
+  defp send_request(action, caller, params) do
     send TODO_PID, {action, caller, params}
     receive_response(action)
   end
-  defp call_service(action, caller, params, callback) do
+  defp send_request(action, caller, params, callback) do
     send TODO_PID, {action, caller, params}
     receive_response(action, callback)
   end
@@ -108,32 +108,32 @@ defmodule TODO do
 
   @doc """
   """
-  def service_loop(todo_list) when is_list(todo_list) do
+  def receiving_requests(todo_list) when is_list(todo_list) do
     receive do
       {:add, caller, [title, completed]} ->
         todo_item = make_new_todo_item(title, completed)
-        send caller, perform_response todo_item
-        service_loop([todo_item | todo_list])
+        send_response caller, todo_item
+        receiving_requests([todo_item | todo_list])
 
       {:list, caller} ->
-        send caller, perform_response todo_list
-        service_loop(todo_list)
+        send_response caller, todo_list
+        receiving_requests(todo_list)
 
       {:complete, caller, [id_item]} ->
         todo_item = complete_todo_item(todo_list, id_item)
         todo_list = update_todo_list(todo_list, todo_item)
-        send caller, perform_response todo_item
-        service_loop(todo_list)
+        send_response caller, todo_item
+        receiving_requests(todo_list)
 
       {:check_created, caller, [title]} ->
         created_task = check_created_task(todo_list, title)
-        send caller, perform_response created_task
-        service_loop(todo_list)
+        send_response caller, created_task
+        receiving_requests(todo_list)
 
       {:check_completed, caller, [id_item]} ->
         completed_task = check_completed_task(todo_list, id_item)
-        send caller, perform_response completed_task
-        service_loop(todo_list)
+        send_response caller, completed_task
+        receiving_requests(todo_list)
     end
   end
 
@@ -192,9 +192,9 @@ defmodule TODO do
     if (completed_task), do: "task already completed", else: false
   end
 
-  defp perform_response(todo_item) when is_map(todo_item), do: {:ok, todo_item}
-  defp perform_response(todo_list) when is_list(todo_list), do: {:ok, todo_list}
-  defp perform_response(not_check) when is_boolean(not_check), do: {:ok, not_check}
-  defp perform_response(reason_check), do: {:error, reason_check}
+  defp send_response(caller, todo_item) when is_map(todo_item), do: send caller, {:ok, todo_item}
+  defp send_response(caller, todo_list) when is_list(todo_list), do: send caller, {:ok, todo_list}
+  defp send_response(caller, not_check) when is_boolean(not_check), do: send caller, {:ok, not_check}
+  defp send_response(caller, reason_check), do: send caller, {:error, reason_check}
 
 end
