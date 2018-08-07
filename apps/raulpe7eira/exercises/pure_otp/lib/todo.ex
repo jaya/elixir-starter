@@ -36,10 +36,8 @@ defmodule TODO do
   defp do_add(%{}), do:
     "ops... title and completed is required"
 
-  @doc """
-  """
-  def is_not_created_task(title, callback) do
-    call_service(:check, self(), [title], callback)
+  defp is_not_created_task(title, callback) do
+    call_service(:check_created, self(), [title], callback)
   end
 
   @doc """
@@ -51,7 +49,13 @@ defmodule TODO do
   @doc """
   """
   def complete(id_item) do
-    call_service(:complete, self(), [id_item])
+    is_not_completed_task(id_item, fn _response ->
+      call_service(:complete, self(), [id_item])
+    end)
+  end
+
+  defp is_not_completed_task(id_item, callback) do
+    call_service(:check_completed, self(), [id_item], callback)
   end
 
   defp call_service(action, caller) do
@@ -121,9 +125,14 @@ defmodule TODO do
         send caller, perform_response todo_item
         service_loop(todo_list)
 
-      {:check, caller, [title]} ->
+      {:check_created, caller, [title]} ->
         created_task = check_created_task(todo_list, title)
         send caller, perform_response created_task
+        service_loop(todo_list)
+
+      {:check_completed, caller, [id_item]} ->
+        completed_task = check_completed_task(todo_list, id_item)
+        send caller, perform_response completed_task
         service_loop(todo_list)
     end
   end
@@ -169,10 +178,18 @@ defmodule TODO do
   end
 
   defp check_created_task(todo_list, title) do
-    any_task = todo_list
+    created_task = todo_list
     |> Enum.any?(&(title == Map.fetch!(&1, :title)))
 
-    if (any_task), do: "task already created", else: false
+    if (created_task), do: "task already created", else: false
+  end
+
+  defp check_completed_task(todo_list, id_item) do
+    completed_task = todo_list
+    |> Enum.map(&(Map.from_struct(&1)))
+    |> Enum.find(&(id_item == Map.fetch!(&1, :id) && Map.fetch!(&1, :completed)))
+
+    if (completed_task), do: "task already completed", else: false
   end
 
   defp perform_response(todo_item) when is_map(todo_item), do: {:ok, todo_item}
