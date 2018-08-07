@@ -5,13 +5,19 @@ defmodule TodoListTest do
   setup do
     TodoList.start()
 
-    {:ok, todo: %{title: "study otp", completed: false}}
+    {
+      :ok,
+      todo: %{title: "study otp", completed: false},
+      id: "1",
+      id_2: "2"
+    }
   end
 
   test ".add", fixture do
     TodoList.add(fixture[:todo])
+    expectation = Map.put(fixture[:todo], :id, fixture[:id])
 
-    assert_receive %{title: "study otp", completed: false}
+    assert_receive expectation
   end
 
   test ".list empty" do
@@ -24,7 +30,8 @@ defmodule TodoListTest do
     TodoList.add(fixture[:todo])
     TodoList.list()
 
-    assert_receive [%{title: "study otp", completed: false}]
+    expectation = Map.put(fixture[:todo], :id, fixture[:id])
+    assert_receive [expectation]
   end
 
   test ".list with two items", fixture do
@@ -36,10 +43,24 @@ defmodule TodoListTest do
                    %{title: "study otp", completed: false}]
   end
 
-  test "Mark todo as completed", fixture do
+  test "Mark first todo as completed", fixture do
     TodoList.add(fixture[:todo])
-    TodoList.completed(1)
+    TodoList.completed(fixture[:id])
 
-    assert_receive %{title: "study otp", completed: true}
+    expectation = %{fixture[:todo] | completed: true}
+                    |> Map.put(:id, fixture[:id])
+
+    assert_receive expectation
+  end
+
+  test "Mark second todo as completed", fixture do
+    TodoList.add(fixture[:todo])
+    second = %{fixture[:todo] | title: "study to be completed"}
+    TodoList.add(second)
+    TodoList.completed(fixture[:id_2])
+
+    expectation = %{second | completed: true}
+
+    assert_receive expectation
   end
 end

@@ -3,27 +3,30 @@ defmodule TodoList do
   A TodoList using processes
   """
 
+  alias TodoList.Repository
+
   def start() do
-    spawn_link(__MODULE__, :loop, [[]])
-      |> Process.register(__MODULE__)
+    pid = spawn_link(__MODULE__, :loop, [[]])
+
+    Process.register(pid, __MODULE__)
   end
 
   def loop(list) do
     receive do
       {:add, todo, caller} ->
-        send(caller, todo)
-        loop([todo | list])
+        new_todo = Repository.build(todo, Enum.count(list)+1)
+
+        send(caller, new_todo)
+        loop([new_todo | list])
       {:list, caller} ->
         send(caller, list)
         loop(list)
-      {:completed, _id, caller} ->
-        #TODO, find todo by id
-        [todo | _] = list
-        completed = %{todo | completed: true}
+      {:completed, id, caller} ->
+        list = Repository.complete(id, list)
+        completed = Repository.find(id, list)
+
         send(caller, completed)
-        loop([completed])
-    after
-      500 -> "nothing received"
+        loop(list)
     end
   end
 
