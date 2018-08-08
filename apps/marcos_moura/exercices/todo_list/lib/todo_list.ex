@@ -23,10 +23,12 @@ defmodule TodoList do
         loop(list)
       {:completed, id, caller} ->
         list = Repository.complete(id, list)
-        completed = Repository.find(id, list)
+        todo = Repository.find(id, list)
 
-        send(caller, completed)
+        send(caller, todo)
         loop(list)
+    after
+      20_000 -> :no_messages
     end
   end
 
