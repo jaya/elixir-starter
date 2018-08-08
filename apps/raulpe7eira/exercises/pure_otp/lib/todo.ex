@@ -1,4 +1,33 @@
-defmodule TODO_ITEM do
+defmodule TODO_Supervisor do
+  def start_link do
+    case Process.whereis(__MODULE__) do
+      nil ->
+        pid = spawn_link __MODULE__, :init, []
+        Process.register pid, __MODULE__
+        IO.puts "~> TODO_Supervisor is started."
+      pid when is_pid(pid) ->
+        IO.puts "TODO_Supervisor is already starting."
+    end
+  end
+
+  def init do
+    Process.flag :trap_exit, true
+    TODO.init()
+    supervising_todo()
+  end
+
+  def supervising_todo do
+    receive do
+      {:EXIT, _from, _reason} ->
+        IO.puts "~> TODO Supervisor: TODO ops..."
+        TODO.init()
+        IO.puts "~> TODO Supervisor: TODO restarted."
+        supervising_todo()
+    end
+  end
+end
+
+defmodule TODO_Item do
   @enforce_keys [:title, :completed]
   defstruct [:id, :title, :completed, :created_at, :completed_at]
 end
@@ -7,20 +36,18 @@ defmodule TODO do
   @moduledoc """
   """
 
+  @timeout_ms 3_000
+
   @doc """
   """
-  def start_link do
-    init()
-  end
-
-  defp init do
-    case Process.whereis(TODO_PID) do
+  def init do
+    case Process.whereis(__MODULE__) do
       nil ->
         pid = spawn_link __MODULE__, :receiving_requests, [[]] 
-        Process.register pid, TODO_PID
-        treat_success "TODO is running..."
+        Process.register pid, __MODULE__
+        treat_success "TODO is started"
       pid when is_pid(pid) ->
-        treat_error "TODO is already running, shutdown first."
+        treat_error "TODO is already starting, shutdown first."
     end
   end
 
@@ -69,15 +96,15 @@ defmodule TODO do
   end
 
   defp send_request(action, caller) do
-    send TODO_PID, {action, caller}
+    send __MODULE__, {action, caller}
     receive_response action
   end
   defp send_request(action, caller, params) do
-    send TODO_PID, {action, caller, params}
+    send __MODULE__, {action, caller, params}
     receive_response action
   end
   defp send_request(action, caller, params, callback) do
-    send TODO_PID, {action, caller, params}
+    send __MODULE__, {action, caller, params}
     receive_response action, callback
   end
 
@@ -88,7 +115,7 @@ defmodule TODO do
     receive do
       {:ok, value} -> callback.({action, value})
       {:error, value} -> treat_error value
-    after 3000 -> treat_error "ops... I forgot to #{action}"
+    after @timeout_ms -> treat_error "ops... I forgot to #{action}"
     end
   end
 
@@ -158,7 +185,7 @@ defmodule TODO do
   end
 
   defp make_new_todo_item(title, completed) do
-    %TODO_ITEM{
+    %TODO_Item{
       id: make_new_id_item(),
       title: title,
       completed: completed,
@@ -184,7 +211,7 @@ defmodule TODO do
     |> Map.update!(:completed, &(!&1))
     |> Map.update!(:completed_at, &(&1 = get_current_date()))
 
-    struct(TODO_ITEM, todo_item)
+    struct(TODO_Item, todo_item)
   end
 
   defp update_todo_list(todo_list, todo_item) when is_list(todo_list) do
