@@ -28,7 +28,6 @@ defmodule TodoList do
         send(caller, list)
         loop(list)
       {:completed, id, caller} ->
-        #TODO, validation of already completed tasks
         list = if Repository.completed?(id, list) do
           send(__MODULE__, {:error, "task already completed", caller})
           list

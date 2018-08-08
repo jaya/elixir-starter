@@ -1,4 +1,7 @@
 defmodule TodoList.Repository do
+  @doc """
+  Build a todo with ID and created_at
+  """
   def build(todo, id) do
     alias TodoList.Md5Hash
 
@@ -16,14 +19,24 @@ defmodule TodoList.Repository do
                    end
   end
 
+  @doc """
+  Find an item by his ID
+  """
   def find(id, list) do
     Enum.find list, fn todo -> todo.id == id end
   end
 
+  @doc """
+  An item is valid when
+    * there is not other item with the same title
+  """
   def valid?(todo, list) do
     !Enum.any?(list, fn x -> x.title == todo.title end)
   end
 
+  @doc """
+  Check if an item is already completed
+  """
   def completed?(id, list) do
     find(id, list).completed == true
   end
