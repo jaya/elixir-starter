@@ -1,5 +1,5 @@
 defmodule TodoListTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest TodoList
 
   setup do
@@ -66,7 +66,17 @@ defmodule TodoListTest do
     assert_receive ^expectation
   end
 
+  @tag :wip
   test "validation to not allow duplicated todos titles", fixture do
+    TodoList.add(fixture[:todo])
+    TodoList.add(fixture[:todo])
+
+    expectation = %{error: "task already created"}
+    assert_receive ^expectation
+  end
+
+  @tag :pending
+  test "validate to not allow completion of already completed tasks", fixture do
     TodoList.add(fixture[:todo])
     TodoList.completed(fixture[:id])
     TodoList.completed(fixture[:id])

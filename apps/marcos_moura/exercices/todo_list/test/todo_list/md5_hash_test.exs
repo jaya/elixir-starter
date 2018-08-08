@@ -1,5 +1,5 @@
 defmodule TodoList.Md5HashTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias TodoList.Md5Hash
 
