@@ -66,7 +66,6 @@ defmodule TodoListTest do
     assert_receive ^expectation
   end
 
-  @tag :wip
   test "validation to not allow duplicated todos titles", fixture do
     TodoList.add(fixture[:todo])
     TodoList.add(fixture[:todo])
@@ -75,7 +74,6 @@ defmodule TodoListTest do
     assert_receive ^expectation
   end
 
-  @tag :pending
   test "validate to not allow completion of already completed tasks", fixture do
     TodoList.add(fixture[:todo])
     TodoList.completed(fixture[:id])

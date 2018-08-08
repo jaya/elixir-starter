@@ -23,5 +23,9 @@ defmodule TodoList.Repository do
   def valid?(todo, list) do
     !Enum.any?(list, fn x -> x.title == todo.title end)
   end
+
+  def completed?(id, list) do
+    find(id, list).completed == true
+  end
 end
 

@@ -14,24 +14,29 @@ defmodule TodoList do
   def loop(list) do
     receive do
       {:add, todo, caller} ->
-        if Repository.valid?(todo, list) do
+        list = if Repository.valid?(todo, list) do
           new_todo = Repository.build(todo, Enum.count(list)+1)
 
           send(caller, new_todo)
-          loop([new_todo | list])
+          [new_todo | list]
         else
-          send(caller, %{error: "task already created"})
           send(__MODULE__, {:error, "task already created", caller})
-          loop(list)
+          list
         end
+        loop(list)
       {:list, caller} ->
         send(caller, list)
         loop(list)
       {:completed, id, caller} ->
         #TODO, validation of already completed tasks
-        list = Repository.complete(id, list)
-
-        send(__MODULE__, {:show, id, list, caller})
+        list = if Repository.completed?(id, list) do
+          send(__MODULE__, {:error, "task already completed", caller})
+          list
+        else
+          list = Repository.complete(id, list)
+          send(__MODULE__, {:show, id, list, caller})
+          list
+        end
         loop(list)
       {:show, id, list, caller} ->
         todo = Repository.find(id, list)

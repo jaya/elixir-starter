@@ -1,7 +1,7 @@
 defmodule TodoList.BuilderTest do
   use ExUnit.Case, async: true
 
-  import TodoList.Repository, only: [build: 2, complete: 2, valid?: 2]
+  import TodoList.Repository, only: [build: 2, complete: 2, valid?: 2, completed?: 2]
 
   test "build a todo with id" do
     todo = build(%{}, 1)
@@ -35,6 +35,20 @@ defmodule TodoList.BuilderTest do
       list = [%{title: 'other'}]
 
       assert valid?(todo, list) == true
+    end
+  end
+
+  describe ".completed?" do
+    test "when was already completed" do
+      list = [%{id: 1, completed: true}]
+
+      assert completed?(1, list) == true
+    end
+
+    test "when is not completed" do
+      list = [%{id: 1, completed: false}]
+
+      assert completed?(1, list) == false
     end
   end
 end
