@@ -1,40 +1,8 @@
-defmodule TODO_Supervisor do
-  def start_link do
-    case Process.whereis(__MODULE__) do
-      nil ->
-        pid = spawn_link __MODULE__, :init, []
-        Process.register pid, __MODULE__
-        IO.puts "~> TODO_Supervisor is started."
-      pid when is_pid(pid) ->
-        IO.puts "TODO_Supervisor is already starting."
-    end
-  end
-
-  def init do
-    Process.flag :trap_exit, true
-    TODO.init()
-    supervising_todo()
-  end
-
-  def supervising_todo do
-    receive do
-      {:EXIT, _from, _reason} ->
-        IO.puts "~> TODO Supervisor: TODO ops..."
-        TODO.init()
-        IO.puts "~> TODO Supervisor: TODO restarted."
-        supervising_todo()
-    end
-  end
-end
-
-defmodule TODO_Item do
-  @enforce_keys [:title, :completed]
-  defstruct [:id, :title, :completed, :created_at, :completed_at]
-end
-
 defmodule TODO do
   @moduledoc """
   """
+
+  alias TODO.Item
 
   @timeout_ms 3_000
 
@@ -155,7 +123,7 @@ defmodule TODO do
   def receiving_requests(todo_list) when is_list(todo_list) do
     receive do
       {:add, caller, [title, completed]} ->
-        todo_item = make_new_todo_item title, completed
+        todo_item = Item.new title, completed
         send_response caller, todo_item
         receiving_requests [todo_item | todo_list]
 
@@ -164,7 +132,7 @@ defmodule TODO do
         receiving_requests todo_list
 
       {:complete, caller, [id_item]} ->
-        todo_item = complete_todo_item todo_list, id_item
+        todo_item = Item.complete todo_list, id_item
         todo_list = update_todo_list todo_list, todo_item
         send_response caller, todo_item
         receiving_requests todo_list
@@ -184,44 +152,9 @@ defmodule TODO do
     end
   end
 
-  defp make_new_todo_item(title, completed) do
-    %TODO_Item{
-      id: make_new_id_item(),
-      title: title,
-      completed: completed,
-      created_at: get_current_date()
-    }
-  end
-
-  defp make_new_id_item do
-    utc_now = NaiveDateTime.utc_now()
-    |> NaiveDateTime.to_string
-
-    "md5-#{
-      :crypto.hash(:md5, utc_now)
-      |> Base.encode16
-      |> String.downcase
-    }"
-  end
-
-  defp complete_todo_item(todo_list, id_item) when is_list(todo_list) do
-    todo_item = todo_list
-    |> Enum.map(&(Map.from_struct(&1)))
-    |> Enum.find(&(id_item == Map.fetch!(&1, :id)))
-    |> Map.update!(:completed, &(!&1))
-    |> Map.update!(:completed_at, &(&1 = get_current_date()))
-
-    struct(TODO_Item, todo_item)
-  end
-
   defp update_todo_list(todo_list, todo_item) when is_list(todo_list) do
     todo_list
     |> Enum.map(&(if &1.id == todo_item.id, do: todo_item, else: &1))
-  end
-
-  defp get_current_date do
-    Date.utc_today()
-    |> Date.to_string
   end
 
   defp check_created_task(todo_list, title) do
