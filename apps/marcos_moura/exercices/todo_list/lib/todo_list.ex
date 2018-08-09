@@ -37,6 +37,13 @@ defmodule TodoList do
     end
   end
 
+  @doc """
+  Add a to-do
+  """
+  def add(todo) do
+    send(__MODULE__, {:add, todo, self()})
+  end
+
   defp create!(false, todo, list, caller) do
     send(__MODULE__, {:invalid, "task already created", caller})
     list
@@ -47,24 +54,6 @@ defmodule TodoList do
 
     send(caller, new_todo)
     [new_todo | list]
-  end
-
-  defp complete!(true, id, list, caller) do
-    send(__MODULE__, {:invalid, "task already completed", caller})
-    list
-  end
-
-  defp complete!(false, id, list, caller) do
-    list = Repository.complete(id, list)
-    send(__MODULE__, {:show, id, list, caller})
-    list
-  end
-
-  @doc """
-  Add a to-do
-  """
-  def add(todo) do
-    send(__MODULE__, {:add, todo, self()})
   end
 
   @doc """
@@ -79,5 +68,16 @@ defmodule TodoList do
   """
   def completed(id) do
     send(__MODULE__, {:completed, id, self()})
+  end
+
+  defp complete!(true, id, list, caller) do
+    send(__MODULE__, {:invalid, "task already completed", caller})
+    list
+  end
+
+  defp complete!(false, id, list, caller) do
+    list = Repository.complete(id, list)
+    send(__MODULE__, {:show, id, list, caller})
+    list
   end
 end
