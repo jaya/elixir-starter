@@ -1,5 +1,6 @@
 defmodule TODO do
   @moduledoc """
+  The TODO is responsable for control a list of tasks.
   """
 
   alias TODO.Task
@@ -7,6 +8,7 @@ defmodule TODO do
   @timeout_ms 3_000
 
   @doc """
+  Initializes and starts receiving requests for the Tasks.
   """
   def init do
     case Process.whereis(__MODULE__) do
@@ -20,6 +22,7 @@ defmodule TODO do
   end
 
   @doc """
+  Adds a new Task in the TODO.
   """
   def add(task) when is_map(task) do
     do_add task
@@ -36,18 +39,21 @@ defmodule TODO do
     treat_error "ops... title and completed is required"
 
   @doc """
+  Lists the created Tasks.
   """
   def list do
     send_request :list, self()
   end
 
   @doc """
+  Completes a created Task.
   """
   def complete(id_task) do
     send_request :complete, self(), [id_task]
   end
 
   @doc """
+  Shuts this control down, for force the supervisor the restart it.
   """
   def shutdown do
     send_request :shutdown, self()
@@ -102,6 +108,7 @@ defmodule TODO do
   end
 
   @doc """
+  Receiving a request, while this control is started.
   """
   def receiving_requests(todo) when is_list(todo) do
     receive do

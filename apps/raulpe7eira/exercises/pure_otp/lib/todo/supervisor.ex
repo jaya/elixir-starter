@@ -1,21 +1,24 @@
 defmodule TODO.Supervisor do
   @moduledoc """
+  The Supervisor is responsible for keeping a TODO started.
   """
 
   @doc """
+  Starts the Supervisor.
   """
-  def start_link do
+  def start do
     case Process.whereis(__MODULE__) do
       nil ->
         pid = spawn_link __MODULE__, :init, []
         Process.register pid, __MODULE__
-        IO.puts "~> TODO_Supervisor is started."
+        IO.puts "~> Supervisor is started."
       pid when is_pid(pid) ->
-        IO.puts "TODO_Supervisor is already starting."
+        IO.puts "Supervisor is already starting."
     end
   end
 
   @doc """
+  Initializes and starts a supervising a TODO.
   """
   def init do
     Process.flag :trap_exit, true
@@ -26,9 +29,9 @@ defmodule TODO.Supervisor do
   defp supervising_todo do
     receive do
       {:EXIT, _from, _reason} ->
-        IO.puts "~> TODO Supervisor: TODO ops..."
+        IO.puts "~> Supervisor: ops... TODO?!"
         TODO.init()
-        IO.puts "~> TODO Supervisor: TODO restarted."
+        IO.puts "~> Supervisor: restarted TODO."
         supervising_todo()
     end
   end

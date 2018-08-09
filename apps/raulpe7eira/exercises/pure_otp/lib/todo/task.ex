@@ -1,15 +1,18 @@
 defmodule TODO.Task do
   @moduledoc """
+  The Task is responsable for its features.
   """
 
   alias TODO.Task
 
   @doc """
+  Defines a struct for the Task.
   """
   @enforce_keys [:title, :completed]
   defstruct [:id, :title, :completed, :created_at, :completed_at]
 
   @doc """
+  Creates a new task if it hasn't been created yet.
   """
   def create(todo, title, completed) do
     if is_created(todo, title) do
@@ -40,6 +43,7 @@ defmodule TODO.Task do
   end
 
   @doc """
+  Completes a created task if it hasn't been completed yet.
   """
   def complete(todo, id) when is_list(todo) do
     if is_completed(todo, id) do
