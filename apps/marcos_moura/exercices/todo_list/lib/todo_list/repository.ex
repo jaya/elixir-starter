@@ -22,8 +22,8 @@ defmodule TodoList.Repository do
   @doc """
   Find an item by his ID
   """
-  def find(id, list) do
-    Enum.find list, fn todo -> todo.id == id end
+  def find(id, todos) do
+    Enum.find todos, fn todo -> todo.id == id end
   end
 
   @doc """
