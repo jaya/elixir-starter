@@ -113,7 +113,8 @@ defmodule TodoListTest do
     assert_receive ^expectation
 
     TodoList.list()
-    expectation = [fixture[:second_todo], fixture[:first_todo]]
+    second_todo = %{fixture[:second_todo] | completed: true}
+    expectation = [second_todo, fixture[:first_todo]]
     assert_receive ^expectation
   end
 

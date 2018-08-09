@@ -28,15 +28,14 @@ defmodule TodoList do
         send(caller, list)
         loop(list)
       {:completed, id, caller} ->
-        list = if Repository.completed?(id, list) do
+        if Repository.completed?(id, list) do
           send(__MODULE__, {:invalid, "task already completed", caller})
-          list
+          loop(list)
         else
           list = Repository.complete(id, list)
           send(__MODULE__, {:show, id, list, caller})
-          list
+          loop(list)
         end
-        loop(list)
       {:show, id, list, caller} ->
         todo = Repository.find(id, list)
 
@@ -44,6 +43,7 @@ defmodule TodoList do
         loop(list)
       {:invalid, message, caller} ->
         send(caller, %{invalid: message})
+        loop(list)
     after
       50_000 -> :no_messages
     end
