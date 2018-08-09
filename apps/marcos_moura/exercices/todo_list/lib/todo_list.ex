@@ -14,28 +14,16 @@ defmodule TodoList do
   def loop(list) do
     receive do
       {:add, todo, caller} ->
-        list = if Repository.valid?(todo, list) do
-          new_todo = Repository.build(todo, Enum.count(list)+1)
-
-          send(caller, new_todo)
-          [new_todo | list]
-        else
-          send(__MODULE__, {:invalid, "task already created", caller})
-          list
-        end
-        loop(list)
+        Repository.valid?(todo, list)
+          |> create!(todo, list, caller)
+          |> loop
       {:list, caller} ->
         send(caller, list)
         loop(list)
       {:completed, id, caller} ->
-        if Repository.completed?(id, list) do
-          send(__MODULE__, {:invalid, "task already completed", caller})
-          loop(list)
-        else
-          list = Repository.complete(id, list)
-          send(__MODULE__, {:show, id, list, caller})
-          loop(list)
-        end
+        Repository.completed?(id, list)
+          |> complete!(id, list, caller)
+          |> loop
       {:show, id, list, caller} ->
         todo = Repository.find(id, list)
 
@@ -47,6 +35,29 @@ defmodule TodoList do
     after
       50_000 -> :no_messages
     end
+  end
+
+  defp create!(false, todo, list, caller) do
+    send(__MODULE__, {:invalid, "task already created", caller})
+    list
+  end
+
+  defp create!(true, todo, list, caller) do
+    new_todo = Repository.build(todo, length(list)+1)
+
+    send(caller, new_todo)
+    [new_todo | list]
+  end
+
+  defp complete!(true, id, list, caller) do
+    send(__MODULE__, {:invalid, "task already completed", caller})
+    list
+  end
+
+  defp complete!(false, id, list, caller) do
+    list = Repository.complete(id, list)
+    send(__MODULE__, {:show, id, list, caller})
+    list
   end
 
   @doc """

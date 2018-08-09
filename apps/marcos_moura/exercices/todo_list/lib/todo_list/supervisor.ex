@@ -1,4 +1,4 @@
-defmodule TodoSupervisor do
+defmodule TodoList.Supervisor do
   def start do
     spawn_link(__MODULE__, :init_children, [])
   end
