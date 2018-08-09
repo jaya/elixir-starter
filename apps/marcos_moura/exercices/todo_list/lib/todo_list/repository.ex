@@ -38,7 +38,12 @@ defmodule TodoList.Repository do
   Check if an item is already completed
   """
   def completed?(id, list) do
-    find(id, list).completed == true
+    find(id, list)
+      |> is_complete?
   end
+
+  #TODO, reponde with a different erro message when is nill
+  defp is_complete?(nil), do: true
+  defp is_complete?(todo), do: todo.completed == true
 end
 
