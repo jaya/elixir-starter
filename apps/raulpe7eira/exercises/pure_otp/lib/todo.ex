@@ -17,7 +17,7 @@ defmodule TODO do
         Process.register pid, __MODULE__
         treat_success "TODO is started"
       pid when is_pid(pid) ->
-        treat_error "TODO is already starting, shutdown first."
+        treat_error "TODO is already starting, shutdown first"
     end
   end
 

@@ -13,7 +13,7 @@ defmodule TODO.Supervisor do
         Process.register pid, __MODULE__
         IO.puts "~> Supervisor is started."
       pid when is_pid(pid) ->
-        IO.puts "Supervisor is already starting."
+        IO.puts "~> Supervisor is already starting."
     end
   end
 
