@@ -70,20 +70,17 @@ defmodule TodoList do
     end
   end
 
-  defp complete_item(todos, id, index) when is_list(todos) do
-    (todos[index].id == id) do
-      completed_item = %{todos[index] | completed: true}
-      List.update_at(todos, index, completed_item)
-      # NÃO FINALIZADO
-  end
+  # defp complete_item(todos, id, index) when is_list(todos) do
+    # todos[index].id == id
+    #   completed_item = %{todos[index] | completed: true}
+    #   List.update_at(todos, index, completed_item)
+    #   # NÃO FINALIZADO
+    # 
+  # end
 
-  defp complete_item(todos, id, index \\ -1) when is_list(todos) and List.length(todos) < index do
+  defp complete_item(todos, id, index \\ -1) when is_list(todos) do
     complete_item(todos, id, index + 1)
     # NÃO FINALIZADO
-  end
-
-  defp is_item_id(todos, id, index) do
-    todos[index].id == id
   end
 
   def loop(todos) do
