@@ -14,10 +14,8 @@ defmodule TodoList.BuilderTest do
   end
 
   test "complete the second item from the list" do
-    input = [%{id: :one, completed: false},
-             %{id: :two, completed: false}]
-    output = [%{id: :one, completed: false},
-              %{id: :two, completed: true}]
+    input = [%{id: :one, completed: false}, %{id: :two, completed: false}]
+    output = [%{id: :one, completed: false}, %{id: :two, completed: true}]
 
     assert complete(:two, input) == output
   end

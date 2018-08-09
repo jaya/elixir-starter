@@ -15,20 +15,24 @@ defmodule TodoList do
     receive do
       {:add, todo, caller} ->
         Repository.valid?(todo, list)
-          |> create!(todo, list, caller)
-          |> loop
+        |> create!(todo, list, caller)
+        |> loop
+
       {:list, caller} ->
         send(caller, list)
         loop(list)
+
       {:completed, id, caller} ->
         Repository.completed?(id, list)
-          |> complete!(id, list, caller)
-          |> loop
+        |> complete!(id, list, caller)
+        |> loop
+
       {:show, id, list, caller} ->
         todo = Repository.find(id, list)
 
         send(caller, todo)
         loop(list)
+
       {:invalid, message, caller} ->
         send(caller, %{invalid: message})
         loop(list)
@@ -50,7 +54,7 @@ defmodule TodoList do
   end
 
   defp create!(true, todo, list, caller) do
-    new_todo = Repository.build(todo, length(list)+1)
+    new_todo = Repository.build(todo, length(list) + 1)
 
     send(caller, new_todo)
     [new_todo | list]

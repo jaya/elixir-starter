@@ -6,24 +6,24 @@ defmodule TodoList.Repository do
     alias TodoList.Md5Hash
 
     Map.put(todo, :id, Md5Hash.generate(id))
-      |> Map.put(:created_at, to_string(Date.utc_today))
+    |> Map.put(:created_at, to_string(Date.utc_today()))
   end
 
   def complete(id, list) do
-    Enum.map list, fn todo ->
-                     if todo.id == id do
-                       %{todo | completed: true}
-                     else
-                       todo
-                     end
-                   end
+    Enum.map(list, fn todo ->
+      if todo.id == id do
+        %{todo | completed: true}
+      else
+        todo
+      end
+    end)
   end
 
   @doc """
   Find an item by his ID
   """
   def find(id, todos) do
-    Enum.find todos, fn todo -> todo.id == id end
+    Enum.find(todos, fn todo -> todo.id == id end)
   end
 
   @doc """
@@ -39,11 +39,10 @@ defmodule TodoList.Repository do
   """
   def completed?(id, list) do
     find(id, list)
-      |> is_complete?
+    |> is_complete?
   end
 
-  #TODO, reponde with a different erro message when is nill
+  # TODO, reponde with a different erro message when is nill
   defp is_complete?(nil), do: true
   defp is_complete?(todo), do: todo.completed == true
 end
-

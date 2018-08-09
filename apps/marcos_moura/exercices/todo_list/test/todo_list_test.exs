@@ -8,8 +8,18 @@ defmodule TodoListTest do
     {
       :ok,
       todo: %{title: "study otp", completed: false},
-      first_todo: %{title: "study otp", completed: false, created_at: "2018-08-09", id: "C4CA4238A0B923820DCC509A6F75849B"},
-      second_todo: %{title: "study spanw", completed: false, created_at: "2018-08-09", id: "C81E728D9D4C2F636F067F89CC14862C"},
+      first_todo: %{
+        title: "study otp",
+        completed: false,
+        created_at: "2018-08-09",
+        id: "C4CA4238A0B923820DCC509A6F75849B"
+      },
+      second_todo: %{
+        title: "study spanw",
+        completed: false,
+        created_at: "2018-08-09",
+        id: "C81E728D9D4C2F636F067F89CC14862C"
+      },
       id: "C4CA4238A0B923820DCC509A6F75849B",
       id_2: "C81E728D9D4C2F636F067F89CC14862C"
     }
@@ -53,7 +63,6 @@ defmodule TodoListTest do
       TodoList.add(%{fixture[:todo] | title: "study spanw"})
       TodoList.list()
 
-
       expectation = [fixture[:second_todo], fixture[:first_todo]]
       assert_receive ^expectation
     end
@@ -96,7 +105,7 @@ defmodule TodoListTest do
 
     second = %{fixture[:todo] | title: "study spanw"}
     TodoList.add(second)
-    #ASK_RODRIGO, pq eh necessario pinar a var e nao da pra usar o fixture direto?
+    # ASK_RODRIGO, pq eh necessario pinar a var e nao da pra usar o fixture direto?
     second_todo = fixture[:second_todo]
     assert_receive ^second_todo
 
@@ -117,7 +126,6 @@ defmodule TodoListTest do
     expectation = [second_todo, fixture[:first_todo]]
     assert_receive ^expectation
   end
-
 
   @tag :pending
   test "supervisor" do

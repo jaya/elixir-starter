@@ -12,7 +12,7 @@ defmodule TodoList.Supervisor do
   def loop do
     receive do
       {:EXIT, _pid, message} ->
-        IO.puts "supervisor exit restart, #{message}"
+        IO.puts("supervisor exit restart, #{message}")
         init_children()
         loop()
     end
