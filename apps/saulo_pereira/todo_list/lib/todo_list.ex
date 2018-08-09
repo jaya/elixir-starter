@@ -1,5 +1,5 @@
 defmodule Item do
-  @enforce_keys [:id , :title]
+  @enforce_keys [:id]
   defstruct [:id , :title , :completed , :created_at, :completed_at]
 end
 
@@ -43,6 +43,7 @@ defmodule TodoList do
     send __MODULE__, {{self(), ref}, :update}
     receive do
       {^ref, :updated} -> IO.inspect("The TodoList was updated")
+
     after 100 ->
       IO.inspect " TodoList isn't running"
     end
@@ -70,17 +71,18 @@ defmodule TodoList do
     end
   end
 
-  # defp complete_item(todos, id, index) when is_list(todos) do
-    # todos[index].id == id
-    #   completed_item = %{todos[index] | completed: true}
-    #   List.update_at(todos, index, completed_item)
-    #   # NÃO FINALIZADO
-    # 
-  # end
-
-  defp complete_item(todos, id, index \\ -1) when is_list(todos) do
-    complete_item(todos, id, index + 1)
-    # NÃO FINALIZADO
+  defp _complete_item(todos, completed_id, index \\ 0) when is_list(todos) do
+    %{id: current_id} = Enum.at(todos, index)
+  
+    if current_id == completed_id  do
+      completed_item = %{Enum.at(todos, index) | completed: true}
+      IO.puts "ACHOU: #{completed_id}"
+      List.update_at(todos, index, completed_item)
+    else
+      IO.puts "Passou pelo #{current_id} #{index}"
+      _complete_item(todos, completed_id, index + 1)
+    end
+    
   end
 
   def loop(todos) do
@@ -98,7 +100,7 @@ defmodule TodoList do
         send sender, {ref, :updated}
         apply __MODULE__, :loop, [todos]
       {{sender, ref},:complete, id} ->
-        updated_todos = complete_item(todos, id)
+        updated_todos = _complete_item(todos, id)
         send sender, {ref, :updated}
         apply __MODULE__, :loop, [updated_todos]
     end
