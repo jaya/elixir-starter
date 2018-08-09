@@ -2,7 +2,7 @@ defmodule TODO do
   @moduledoc """
   """
 
-  alias TODO.Item
+  alias TODO.Task
 
   @timeout_ms 3_000
 
@@ -21,14 +21,12 @@ defmodule TODO do
 
   @doc """
   """
-  def add(item) when is_map(item) do
-    do_add item
+  def add(task) when is_map(task) do
+    do_add task
   end
 
   defp do_add(%{title: title, completed: completed}) do
-    is_not_created_task(title, fn _response ->
-      send_request :add, self(), [title, completed]
-    end)
+    send_request :add, self(), [title, completed]
   end
   defp do_add(%{completed: _completed}), do:
     treat_error "ops... title is required"
@@ -36,10 +34,6 @@ defmodule TODO do
     treat_error "ops... completed is required"
   defp do_add(%{}), do:
     treat_error "ops... title and completed is required"
-
-  defp is_not_created_task(title, callback) do
-    send_request :check_created, self(), [title], callback
-  end
 
   @doc """
   """
@@ -49,16 +43,12 @@ defmodule TODO do
 
   @doc """
   """
-  def complete(id_item) do
-    is_not_completed_task(id_item, fn _response ->
-      send_request :complete, self(), [id_item]
-    end)
+  def complete(id_task) do
+    send_request :complete, self(), [id_task]
   end
 
-  defp is_not_completed_task(id_item, callback) do
-    send_request :check_completed, self(), [id_item], callback
-  end
-
+  @doc """
+  """
   def shutdown do
     send_request :shutdown, self()
   end
@@ -71,40 +61,33 @@ defmodule TODO do
     send __MODULE__, {action, caller, params}
     receive_response action
   end
-  defp send_request(action, caller, params, callback) do
-    send __MODULE__, {action, caller, params}
-    receive_response action, callback
-  end
 
   defp receive_response(action) do
-    receive_response action, &render_response/1
-  end
-  defp receive_response(action, callback) do
     receive do
-      {:ok, value} -> callback.({action, value})
+      {:ok, value} -> render_response({action, value})
       {:error, value} -> treat_error value
     after @timeout_ms -> treat_error "ops... I forgot to #{action}"
     end
   end
 
-  defp render_response({:add, todo_item}) when is_map(todo_item) do
-    todo_item
+  defp render_response({:add, task}) when is_map(task) do
+    task
     |> filter_by_keys([:completed_at])
   end
-  defp render_response({:list, todo_list}) when is_list(todo_list) do
-    todo_list
+  defp render_response({:list, todo}) when is_list(todo) do
+    todo
     |> Enum.map(&(filter_by_keys(&1, [:created_at, :completed_at])))
   end
-  defp render_response({:complete, todo_item}) when is_map(todo_item) do
-    todo_item
+  defp render_response({:complete, task}) when is_map(task) do
+    task
     |> filter_by_keys([])
   end
   defp render_response({:shutdown, message}) do
     treat_success message
   end
 
-  defp filter_by_keys(todo_item, filter_keys) when is_map(todo_item) and is_list(filter_keys) do
-    todo_item
+  defp filter_by_keys(task, filter_keys) when is_map(task) and is_list(filter_keys) do
+    task
     |> Map.from_struct
     |> Enum.filter(fn {key, _value} -> key not in filter_keys end)
     |> Enum.into(%{})
@@ -120,62 +103,43 @@ defmodule TODO do
 
   @doc """
   """
-  def receiving_requests(todo_list) when is_list(todo_list) do
+  def receiving_requests(todo) when is_list(todo) do
     receive do
       {:add, caller, [title, completed]} ->
-        todo_item = Item.new title, completed
-        send_response caller, todo_item
-        receiving_requests [todo_item | todo_list]
+        task = Task.create todo, title, completed
+        send_response caller, task
+        todo = insert todo, task
+        receiving_requests todo
 
       {:list, caller} ->
-        send_response caller, todo_list
-        receiving_requests todo_list
+        send_response caller, todo
+        receiving_requests todo
 
-      {:complete, caller, [id_item]} ->
-        todo_item = Item.complete todo_list, id_item
-        todo_list = update_todo_list todo_list, todo_item
-        send_response caller, todo_item
-        receiving_requests todo_list
-
-      {:check_created, caller, [title]} ->
-        created_task = check_created_task todo_list, title
-        send_response caller, created_task
-        receiving_requests todo_list
-
-      {:check_completed, caller, [id_item]} ->
-        completed_task = check_completed_task todo_list, id_item
-        send_response caller, completed_task
-        receiving_requests todo_list
+      {:complete, caller, [id_task]} ->
+        task = Task.complete todo, id_task
+        todo = update todo, task
+        send_response caller, task
+        receiving_requests todo
 
       {:shutdown, caller} ->
         send_response caller, "TODO shutdown"
     end
   end
 
-  defp update_todo_list(todo_list, todo_item) when is_list(todo_list) do
-    todo_list
-    |> Enum.map(&(if &1.id == todo_item.id, do: todo_item, else: &1))
+  defp insert(todo, task) when is_list(todo) and is_map(task) do
+    [task | todo]
   end
+  defp insert(todo, _task) when is_list(todo), do: todo 
 
-  defp check_created_task(todo_list, title) do
-    created_task = todo_list
-    |> Enum.any?(&(title == Map.fetch!(&1, :title)))
-
-    if (created_task), do: {true, "task already created"}, else: {false}
+  defp update(todo, task) when is_list(todo) and is_map(task) do
+    todo
+    |> Enum.map(&(if &1.id == task.id, do: task, else: &1))
   end
+  defp update(todo, _task) when is_list(todo), do: todo
 
-  defp check_completed_task(todo_list, id_item) do
-    completed_task = todo_list
-    |> Enum.map(&(Map.from_struct(&1)))
-    |> Enum.find(&(id_item == Map.fetch!(&1, :id) && Map.fetch!(&1, :completed)))
-
-    if (completed_task), do: {true, "task already completed"}, else: {false}
-  end
-
-  defp send_response(caller, todo_item) when is_map(todo_item), do: send caller, {:ok, todo_item}
-  defp send_response(caller, todo_list) when is_list(todo_list), do: send caller, {:ok, todo_list}
-  defp send_response(caller, {true, reason}), do: send caller, {:error, reason}
-  defp send_response(caller, {false}), do: send caller, {:ok, false}
+  defp send_response(caller, {:unchecked, reason}), do: send caller, {:error, reason}
+  defp send_response(caller, task) when is_map(task), do: send caller, {:ok, task}
+  defp send_response(caller, todo) when is_list(todo), do: send caller, {:ok, todo}
   defp send_response(caller, message), do: send caller, {:ok, message}
 
 end
