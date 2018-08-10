@@ -67,13 +67,19 @@ defmodule TodoList do
     receive do
       {^ref, :completed} ->
         IO.inspect "Item completed"
+      {^ref, :error, message} ->
+        IO.inspect message
     after 100 ->
       IO.inspect "TodoList isn't running"
     end
   end
 
   defp _complete_item([%Item{id: id } = head | tail], id, new_todos) do
-    _complete_item(tail, id, [%{head | completed: true, completed_at: Date.utc_today |> to_string} | new_todos])
+    if head.completed do
+        {:error,"task already completed"}
+      else
+        _complete_item(tail, id, [%{head | completed: true, completed_at: Date.utc_today |> to_string} | new_todos])
+    end
   end
 
   defp _complete_item([head | tail], id, new_todos) do
@@ -81,7 +87,7 @@ defmodule TodoList do
   end
 
   defp _complete_item([], _id, new_todos) do
-    new_todos
+    {:ok, new_todos}
   end
 
 
@@ -102,25 +108,34 @@ defmodule TodoList do
       {{sender, ref}, :add, title, completed} ->
         if _check_if_title_exists todos, title do
           send sender, {ref, :error, "task already created"}
-          apply __MODULE__, :loop, [todos]
+          callLoopAgain [todos]
         else
           item = %Item{id: generate_id() , title: title, completed: completed, created_at: Date.utc_today |> to_string, completed_at: nil}
           send sender, {ref, item}
-          apply __MODULE__, :loop, [[item|todos]]
+          callLoopAgain [[item|todos]]
         end
       {{sender, ref}, :list} -> 
         send sender, {ref, todos}
-        apply __MODULE__, :loop, [todos]
+        callLoopAgain [todos]
       {{sender, ref}, :stop} ->
         send sender, {ref, :ok}
       {{sender, ref},:update} ->
         send sender, {ref, :updated}
-        apply __MODULE__, :loop, [todos]
+        callLoopAgain [todos]
       {{sender, ref},:complete, id} ->
-        updated_todos = _complete_item(todos, id, [])
-        send sender, {ref, :completed}
-        apply __MODULE__, :loop, [updated_todos]
+        case _complete_item(todos, id, []) do
+          {:ok, updated_todos} -> 
+            send sender, {ref, :completed}
+            callLoopAgain [updated_todos]
+          {:error, message} ->
+            send sender, {ref, :error, message}
+            callLoopAgain [todos]
+        end
     end
+  end
+
+  defp callLoopAgain(todos) do
+    apply __MODULE__, :loop, todos
   end
 
   def generate_id() do
