@@ -12,7 +12,7 @@
 
 3) Pure OTP Exercices (WIP)
 
-- [ ] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
+- [x] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
 
 4) MIX & OTP
 
