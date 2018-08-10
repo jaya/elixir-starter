@@ -3,6 +3,8 @@ defmodule TODO.Supervisor do
   The Supervisor is responsible for keeping a TODO started.
   """
 
+  require Logger
+
   @doc """
   Starts the Supervisor.
   """
@@ -11,9 +13,9 @@ defmodule TODO.Supervisor do
       nil ->
         pid = spawn_link __MODULE__, :init, []
         Process.register pid, __MODULE__
-        IO.puts "~> Supervisor is started."
+        Logger.debug("Supervisor/#{inspect(pid)}: is started")
       pid when is_pid(pid) ->
-        IO.puts "~> Supervisor is already starting."
+        Logger.debug("Supervisor/#{inspect(pid)}: is already starting")
     end
   end
 
@@ -28,10 +30,10 @@ defmodule TODO.Supervisor do
 
   defp supervising_todo do
     receive do
-      {:EXIT, _from, _reason} ->
-        IO.puts "~> Supervisor: ops... TODO?!"
-        TODO.init()
-        IO.puts "~> Supervisor: restarted TODO."
+      {:EXIT, from, _reason} ->
+        Logger.debug("Supervisor/#{inspect(System.get_pid())}: ops... TODO/#{inspect(from)} exited")
+        pid = TODO.init()
+        Logger.debug("Supervisor/#{inspect(System.get_pid())}: há!... TODO/#{inspect(pid)} restarted")
         supervising_todo()
     end
   end

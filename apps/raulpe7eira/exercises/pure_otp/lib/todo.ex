@@ -4,6 +4,7 @@ defmodule TODO do
   """
 
   alias TODO.Task
+  require Logger
 
   @timeout_ms 3_000
 
@@ -15,9 +16,11 @@ defmodule TODO do
       nil ->
         pid = spawn_link __MODULE__, :receiving_requests, [[]] 
         Process.register pid, __MODULE__
-        treat_success "TODO is started"
+        Logger.debug("TODO/#{inspect(pid)}: is started")
+        pid
       pid when is_pid(pid) ->
-        treat_error "TODO is already starting, shutdown first"
+        Logger.debug("TODO/#{inspect(pid)}: is already starting, shutdown first")
+        pid
     end
   end
 
@@ -89,7 +92,7 @@ defmodule TODO do
     |> filter_by_keys([])
   end
   defp render_response({:shutdown, message}) do
-    treat_success message
+    Logger.debug("TODO/#{inspect(System.get_pid())}: #{message}")
   end
 
   defp filter_by_keys(task, filter_keys) when is_map(task) and is_list(filter_keys) do
@@ -97,10 +100,6 @@ defmodule TODO do
     |> Map.from_struct
     |> Enum.filter(fn {key, _value} -> key not in filter_keys end)
     |> Enum.into(%{})
-  end
-
-  defp treat_success(message) do
-    %{ok: message}
   end
 
   defp treat_error(reason) do
@@ -129,7 +128,7 @@ defmodule TODO do
         receiving_requests todo
 
       {:shutdown, caller} ->
-        send_response caller, "TODO shutdown"
+        send_response caller, "is shutdown"
     end
   end
 
