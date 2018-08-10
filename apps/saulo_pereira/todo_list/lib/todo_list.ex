@@ -108,33 +108,33 @@ defmodule TodoList do
       {{sender, ref}, :add, title, completed} ->
         if _check_if_title_exists todos, title do
           send sender, {ref, :error, "task already created"}
-          callLoopAgain [todos]
+          _callLoopAgain [todos]
         else
           item = %Item{id: generate_id() , title: title, completed: completed, created_at: Date.utc_today |> to_string, completed_at: nil}
           send sender, {ref, item}
-          callLoopAgain [[item|todos]]
+          _callLoopAgain [[item|todos]]
         end
       {{sender, ref}, :list} -> 
         send sender, {ref, todos}
-        callLoopAgain [todos]
+        _callLoopAgain [todos]
       {{sender, ref}, :stop} ->
         send sender, {ref, :ok}
       {{sender, ref},:update} ->
         send sender, {ref, :updated}
-        callLoopAgain [todos]
+        _callLoopAgain [todos]
       {{sender, ref},:complete, id} ->
         case _complete_item(todos, id, []) do
           {:ok, updated_todos} -> 
             send sender, {ref, :completed}
-            callLoopAgain [updated_todos]
+            _callLoopAgain [updated_todos]
           {:error, message} ->
             send sender, {ref, :error, message}
-            callLoopAgain [todos]
+            _callLoopAgain [todos]
         end
     end
   end
 
-  defp callLoopAgain(todos) do
+  defp _callLoopAgain(todos) do
     apply __MODULE__, :loop, todos
   end
 
