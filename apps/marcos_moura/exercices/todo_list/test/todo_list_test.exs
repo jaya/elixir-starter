@@ -11,13 +11,13 @@ defmodule TodoListTest do
       first_todo: %{
         title: "study otp",
         completed: false,
-        created_at: "2018-08-09",
+        created_at: "2018-08-10",
         id: "C4CA4238A0B923820DCC509A6F75849B"
       },
       second_todo: %{
         title: "study spanw",
         completed: false,
-        created_at: "2018-08-09",
+        created_at: "2018-08-10",
         id: "C81E728D9D4C2F636F067F89CC14862C"
       },
       id: "C4CA4238A0B923820DCC509A6F75849B",
@@ -105,7 +105,6 @@ defmodule TodoListTest do
 
     second = %{fixture[:todo] | title: "study spanw"}
     TodoList.add(second)
-    # ASK_RODRIGO, pq eh necessario pinar a var e nao da pra usar o fixture direto?
     second_todo = fixture[:second_todo]
     assert_receive ^second_todo
 
