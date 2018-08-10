@@ -31,9 +31,9 @@ defmodule TODO.Supervisor do
   defp supervising_todo do
     receive do
       {:EXIT, from, _reason} ->
-        Logger.debug("Supervisor/#{inspect(System.get_pid())}: ops... TODO/#{inspect(from)} exited")
+        Logger.debug("Supervisor/#{inspect(Process.whereis(__MODULE__))}: ops... TODO/#{inspect(from)} exited")
         pid = TODO.init()
-        Logger.debug("Supervisor/#{inspect(System.get_pid())}: há!... TODO/#{inspect(pid)} restarted")
+        Logger.debug("Supervisor/#{inspect(Process.whereis(__MODULE__))}: há!... TODO/#{inspect(pid)} restarted")
         supervising_todo()
     end
   end
