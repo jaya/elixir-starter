@@ -1,5 +1,5 @@
 defmodule Item do
-  @enforce_keys [:id]
+  @enforce_keys [:id, :title]
   defstruct [:id , :title , :completed , :created_at, :completed_at]
 end
 
@@ -23,6 +23,7 @@ defmodule TodoList do
     send __MODULE__, {{self(), ref}, :add, title, completed}
     receive do
       {^ref, item} -> IO.inspect(item)
+      {^ref, :error, message} -> IO.inspect(message)
     after 100 ->
       IO.inspect " TodoList isn't running"
     end
@@ -64,33 +65,49 @@ defmodule TodoList do
     ref = make_ref()
     send __MODULE__, {{self(), ref}, :complete, id}
     receive do
-      {^ref, :ok} ->
+      {^ref, :completed} ->
         IO.inspect "Item completed"
     after 100 ->
       IO.inspect "TodoList isn't running"
     end
   end
 
-  defp _complete_item(todos, completed_id, index \\ 0) when is_list(todos) do
-    %{id: current_id} = Enum.at(todos, index)
-  
-    if current_id == completed_id  do
-      completed_item = %{Enum.at(todos, index) | completed: true}
-      IO.puts "ACHOU: #{completed_id}"
-      List.update_at(todos, index, completed_item)
-    else
-      IO.puts "Passou pelo #{current_id} #{index}"
-      _complete_item(todos, completed_id, index + 1)
-    end
-    
+  defp _complete_item([%Item{id: id } = head | tail], id, new_todos) do
+    _complete_item(tail, id, [%{head | completed: true, completed_at: Date.utc_today |> to_string} | new_todos])
+  end
+
+  defp _complete_item([head | tail], id, new_todos) do
+    _complete_item(tail, id, [head | new_todos])
+  end
+
+  defp _complete_item([], _id, new_todos) do
+    new_todos
+  end
+
+
+  defp _check_if_title_exists([%Item{title: title } = _head | _tail], title) do
+    true
+  end
+
+  defp _check_if_title_exists([_head | tail], title) do
+    _check_if_title_exists(tail, title)
+  end
+
+  defp _check_if_title_exists([], _title) do
+    false
   end
 
   def loop(todos) do
     receive do
       {{sender, ref}, :add, title, completed} ->
-        item = %Item{id: generate_id() , title: title, completed: completed, created_at: Date.utc_today |> to_string, completed_at: nil}
-        send sender, {ref, item}
-        apply __MODULE__, :loop, [[item|todos]]
+        if _check_if_title_exists todos, title do
+          send sender, {ref, :error, "task already created"}
+          apply __MODULE__, :loop, [todos]
+        else
+          item = %Item{id: generate_id() , title: title, completed: completed, created_at: Date.utc_today |> to_string, completed_at: nil}
+          send sender, {ref, item}
+          apply __MODULE__, :loop, [[item|todos]]
+        end
       {{sender, ref}, :list} -> 
         send sender, {ref, todos}
         apply __MODULE__, :loop, [todos]
@@ -100,8 +117,8 @@ defmodule TodoList do
         send sender, {ref, :updated}
         apply __MODULE__, :loop, [todos]
       {{sender, ref},:complete, id} ->
-        updated_todos = _complete_item(todos, id)
-        send sender, {ref, :updated}
+        updated_todos = _complete_item(todos, id, [])
+        send sender, {ref, :completed}
         apply __MODULE__, :loop, [updated_todos]
     end
   end
