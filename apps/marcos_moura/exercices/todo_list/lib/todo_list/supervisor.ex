@@ -14,7 +14,6 @@ defmodule TodoList.Supervisor do
       {:EXIT, _pid, message} ->
         IO.puts("supervisor exit restart, #{message}")
         init_children()
-        loop()
     end
   end
 end
