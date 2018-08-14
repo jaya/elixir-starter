@@ -15,7 +15,7 @@ defmodule TODO.Task do
   Creates a new task if it hasn't been created yet.
   """
   def create(todo, title, completed) do
-    if is_created(todo, title) do
+    if created?(todo, title) do
       treat_unchecked "task already created"
     else
       %Task{
@@ -27,7 +27,7 @@ defmodule TODO.Task do
     end
   end
 
-  defp is_created(todo, title) do
+  defp created?(todo, title) do
     Enum.any?(todo, &(title == Map.fetch!(&1, :title)))
   end
 
@@ -46,7 +46,7 @@ defmodule TODO.Task do
   Completes a created task if it hasn't been completed yet.
   """
   def complete(todo, id) when is_list(todo) do
-    if is_completed(todo, id) do
+    if completed?(todo, id) do
       treat_unchecked "task already completed"
     else
       struct(Task, todo
@@ -58,7 +58,7 @@ defmodule TODO.Task do
     end
   end
 
-  defp is_completed(todo, id) do
+  defp completed?(todo, id) do
     todo
     |> Enum.map(&(Map.from_struct(&1)))
     |> Enum.find(&(id == Map.fetch!(&1, :id) && Map.fetch!(&1, :completed)))

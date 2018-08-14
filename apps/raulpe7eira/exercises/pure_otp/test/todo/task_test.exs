@@ -1,6 +1,7 @@
 defmodule TODO.TaskTest do
   use ExUnit.Case, async: true
   doctest TODO.Task
+  @moduletag :task
 
   describe "TODO.Task.create/3" do
     test "expected: a created task" do

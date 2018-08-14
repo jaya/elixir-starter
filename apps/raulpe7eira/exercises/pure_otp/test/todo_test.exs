@@ -1,20 +1,27 @@
 defmodule TODOTest do
   use ExUnit.Case, async: true
   doctest TODO
+  @moduletag :todo
+
+  import ExUnit.CaptureLog
 
   describe "TODO.init/0" do
     test "expected: a success message" do
-      assert TODO.init() == %{ok: "TODO is started"}
+      assert capture_log(fn ->
+        TODO.init()
+      end) =~ ~r/: is started/
     end
 
     test "expected: a error message" do
-      TODO.init()
-
-      assert TODO.init() == %{error: "TODO is already starting, shutdown first"}
+      assert capture_log(fn ->
+        TODO.init()
+        TODO.init()
+      end) =~ ~r/: is already starting, shutdown first/
     end
   end
 
   describe "TODO.add/1" do
+    @tag capture_log: true
     test "expected: a created task" do
       TODO.init()
 
@@ -28,24 +35,28 @@ defmodule TODOTest do
       assert Map.has_key? task, :created_at
     end
 
+    @tag capture_log: true
     test "expected: a required error for title" do
       TODO.init()
 
       assert TODO.add(%{completed: false}) == %{error: "ops... title is required"}
     end
 
+    @tag capture_log: true
     test "expected: a required error for completed" do
       TODO.init()
 
       assert TODO.add(%{title: "tst-0"}) == %{error: "ops... completed is required"}
     end
 
+    @tag capture_log: true
     test "expected: a required error for title and completed" do
       TODO.init()
 
       assert TODO.add(%{}) == %{error: "ops... title and completed is required"}
     end
 
+    @tag capture_log: true
     test "expected: a unchecked error for task already created" do
       TODO.init()
 
@@ -57,13 +68,15 @@ defmodule TODOTest do
   end
 
   describe "TODO.list/0" do
+    @tag capture_log: true
     test "expected: a empty list" do
       TODO.init()
 
       assert TODO.list() == []
     end
 
-    test "expected: a populate list" do
+    @tag capture_log: true
+    test "expected: a populated list" do
       TODO.init()
 
       TODO.add %{completed: false, title: "tst-0"}
@@ -74,6 +87,7 @@ defmodule TODOTest do
   end
 
   describe "TODO.complete/1" do
+    @tag capture_log: true
     test "expected: a updated task" do
       TODO.init()
 
@@ -92,6 +106,7 @@ defmodule TODOTest do
       assert Map.fetch!(task, :completed) == true
     end
 
+    @tag capture_log: true
     test "expected: a unchecked error for task already completed" do
       TODO.init()
 
@@ -106,9 +121,10 @@ defmodule TODOTest do
 
   describe "TODO.shutdown/0" do
     test "expected: a success message" do
-      TODO.init()
-
-      assert TODO.shutdown() == %{ok: "TODO shutdown"}
+      assert capture_log(fn ->
+        TODO.init()
+        TODO.shutdown()
+      end) =~ ~r/: is shutdown/
     end
   end
 end

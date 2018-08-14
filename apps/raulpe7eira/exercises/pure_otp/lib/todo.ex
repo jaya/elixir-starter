@@ -4,6 +4,7 @@ defmodule TODO do
   """
 
   alias TODO.Task
+  require Logger
 
   @timeout_ms 3_000
 
@@ -15,9 +16,11 @@ defmodule TODO do
       nil ->
         pid = spawn_link __MODULE__, :receiving_requests, [[]] 
         Process.register pid, __MODULE__
-        treat_success "TODO is started"
+        Logger.debug("TODO/#{inspect(pid)}: is started")
+        pid
       pid when is_pid(pid) ->
-        treat_error "TODO is already starting, shutdown first"
+        Logger.debug("TODO/#{inspect(pid)}: is already starting, shutdown first")
+        pid
     end
   end
 
@@ -70,6 +73,7 @@ defmodule TODO do
 
   defp receive_response(action) do
     receive do
+      {:ok} -> render_response({action})
       {:ok, value} -> render_response({action, value})
       {:error, value} -> treat_error value
     after @timeout_ms -> treat_error "ops... I forgot to #{action}"
@@ -88,8 +92,8 @@ defmodule TODO do
     task
     |> filter_by_keys([])
   end
-  defp render_response({:shutdown, message}) do
-    treat_success message
+  defp render_response({:shutdown}) do
+    :ok
   end
 
   defp filter_by_keys(task, filter_keys) when is_map(task) and is_list(filter_keys) do
@@ -97,10 +101,6 @@ defmodule TODO do
     |> Map.from_struct
     |> Enum.filter(fn {key, _value} -> key not in filter_keys end)
     |> Enum.into(%{})
-  end
-
-  defp treat_success(message) do
-    %{ok: message}
   end
 
   defp treat_error(reason) do
@@ -129,7 +129,8 @@ defmodule TODO do
         receiving_requests todo
 
       {:shutdown, caller} ->
-        send_response caller, "TODO shutdown"
+        Logger.debug("TODO/#{inspect(Process.whereis(__MODULE__))}: is shutdown")
+        send_response caller
     end
   end
 
@@ -147,6 +148,6 @@ defmodule TODO do
   defp send_response(caller, {:unchecked, reason}), do: send caller, {:error, reason}
   defp send_response(caller, task) when is_map(task), do: send caller, {:ok, task}
   defp send_response(caller, todo) when is_list(todo), do: send caller, {:ok, todo}
-  defp send_response(caller, message), do: send caller, {:ok, message}
+  defp send_response(caller), do: send caller, {:ok}
 
 end
