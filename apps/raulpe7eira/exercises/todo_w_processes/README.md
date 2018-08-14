@@ -5,17 +5,17 @@
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `pure_otp` to your list of dependencies in `mix.exs`:
+by adding `todo_w_processes` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:pure_otp, "~> 0.1.0"}
+    {:todo_w_processes, "~> 0.1.0"}
   ]
 end
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/pure_otp](https://hexdocs.pm/pure_otp).
+be found at [https://hexdocs.pm/todo_w_processes](https://hexdocs.pm/todo_w_processes).
 
