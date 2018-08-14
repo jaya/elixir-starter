@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :todo_w_processes, key: :value
+#     config :pure_processes, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:todo_w_processes, :key)
+#     Application.get_env(:pure_processes, :key)
 #
 # You can also configure a 3rd-party app:
 #
