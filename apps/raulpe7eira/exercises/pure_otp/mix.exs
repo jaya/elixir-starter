@@ -1,4 +1,4 @@
-defmodule TodoWOtp.MixProject do
+defmodule PureOtp.MixProject do
   use Mix.Project
 
   def project do

@@ -1,4 +1,4 @@
-# TodoWOtp
+# PureOtp
 
 **TODO: Add description**
 

@@ -1,4 +1,4 @@
-defmodule PureOtp.MixProject do
+defmodule PureProcesses.MixProject do
   use Mix.Project
 
   def project do

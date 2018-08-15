@@ -1,4 +1,4 @@
-# PureOtp
+# PureProcesses
 
 **TODO: Add description**
 
