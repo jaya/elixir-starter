@@ -1,13 +1,6 @@
 defmodule TODO.Task do
-  # to use agent here too.
 
-  defstruct [
-    :id,
-    :title,
-    :completed,
-    :created_at,
-    :completed_at
-  ]
+  defstruct [:id, :title, :completed, :created_at, :completed_at]
 
   def create(title, completed) do
     %__MODULE__{
