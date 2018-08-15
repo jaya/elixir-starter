@@ -12,11 +12,11 @@
 
 3) Pure Processes Exercices 
 
-- [ ] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
+- [x] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
 
 4) MIX & OTP
 
-- [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
+- [x] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
 - [ ] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
 - [ ] [Optional] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 
