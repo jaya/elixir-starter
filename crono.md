@@ -17,7 +17,7 @@
 4) MIX & OTP
 
 - [x] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
-- [ ] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
+- [x] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
 - [ ] [Optional] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 
 5) OTP Exercices (WIP)
