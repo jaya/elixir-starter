@@ -7,16 +7,16 @@ defmodule TODO.Server do
     GenServer.start_link __MODULE__, :ok, opts
   end
 
-  def add(task) do
-    GenServer.call __MODULE__, {:add, task}
+  def add(server, task) do
+    GenServer.call server, {:add, task}
   end
 
-  def list() do
-    GenServer.call __MODULE__, :list
+  def list(server) do
+    GenServer.call server, :list
   end
 
-  def complete(id) do
-    GenServer.call __MODULE__, {:complete, id}
+  def complete(server, id) do
+    GenServer.call server, {:complete, id}
   end
 
   ## Server API

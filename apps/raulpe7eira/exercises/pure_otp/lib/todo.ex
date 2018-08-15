@@ -6,14 +6,14 @@ defmodule TODO do
   end
 
   def add(task) do
-    TODO.Server.add task
+    TODO.Server.add TODO.Server, task
   end
 
   def list() do
-    TODO.Server.list
+    TODO.Server.list TODO.Server
   end
 
   def complete(id) do
-    TODO.Server.complete id
+    TODO.Server.complete TODO.Server, id
   end
 end

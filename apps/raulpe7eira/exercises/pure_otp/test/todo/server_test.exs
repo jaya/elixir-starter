@@ -5,79 +5,66 @@ defmodule TODO.ServerTest do
 
   setup do
     server = start_supervised! TODO.Server
-    %{server: server}
+    task = %{ completed: false, title: "tst-0" }
+
+    %{ server: server, task: task }
   end
 
   describe "TODO.add/1" do
-    test "expected: a created task" do
-      response = TODO.Server.add %{completed: false, title: "tst-0"}
+    test "expected: a created task", context do
+      response = TODO.Server.add context.server, context.task
 
       assert is_map response
-
       assert Map.has_key? response, :id
       assert Map.has_key? response, :title
       assert Map.has_key? response, :completed
       assert Map.has_key? response, :created_at
-
-      :ok = stop_supervised TODO.Server
     end
 
-    test "expected: a unchecked error for task already created" do
-      task = %{completed: false, title: "tst-0"} 
-      TODO.Server.add task
-      response = TODO.Server.add(task)
-      assert response == %{error: "task already created"}
+    test "expected: a unchecked error for task already created", context do
+      TODO.Server.add context.server, context.task
+      response = TODO.Server.add context.server, context.task
 
-      :ok = stop_supervised TODO.Server
+      assert response == %{ error: "task already created" }
     end
   end
 
   describe "TODO.Server.list/0" do
-    test "expected: a empty list", %{server: _server} do
-      response = TODO.Server.list()
-      assert response == []
+    test "expected: a empty list", context do
+      response = TODO.Server.list context.server
 
-      :ok = stop_supervised TODO.Server
+      assert response == []
     end
 
-    test "expected: a populated list", %{server: _server} do
-      TODO.Server.add %{completed: false, title: "tst-0"}
-      TODO.Server.add %{completed: false, title: "tst-1"}
-      response = TODO.Server.list()
-      assert length(response) == 2
+    test "expected: a populated list", context do
+      TODO.Server.add context.server, context.task
+      TODO.Server.add context.server, %{ context.task | title: "tst-1" }
+      response = TODO.Server.list context.server
 
-      :ok = stop_supervised TODO.Server
+      assert length(response) == 2
     end
   end
 
   describe "TODO.complete/1" do
-    test "expected: a updated task" do
-      id = TODO.Server.add %{completed: false, title: "tst-0"} |> Map.fetch!(:id)
+    test "expected: a updated task", context do
+      id = TODO.Server.add(context.server, context.task) |> Map.fetch!(:id)
+      response = TODO.Server.complete context.server, id
 
-      response = TODO.complete id
       assert is_map response
-
       assert Map.has_key? response, :id
       assert Map.has_key? response, :title
       assert Map.has_key? response, :completed
       assert Map.has_key? response, :created_at
       assert Map.has_key? response, :completed_at
-
       assert Map.fetch!(response, :completed) == true
-
-      :ok = stop_supervised TODO.Server
     end
 
-    @tag capture_log: true
-    test "expected: a unchecked error for task already completed" do
-      id = TODO.add(%{completed: false, title: "tst-0"}) |> Map.fetch!(:id)
+    test "expected: a unchecked error for task already completed", context do
+      id = TODO.Server.add(context.server, context.task) |> Map.fetch!(:id)
+      TODO.Server.complete context.server, id
+      response = TODO.Server.complete context.server, id
 
-      TODO.complete id
-      response = TODO.complete(id)
-
-      assert response == %{error: "task already completed"}
-
-      :ok = stop_supervised TODO.Server
+      assert response == %{ error: "task already completed" }
     end
   end
 end
