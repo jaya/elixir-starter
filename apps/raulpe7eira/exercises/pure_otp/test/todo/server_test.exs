@@ -10,7 +10,7 @@ defmodule TODO.ServerTest do
     %{ server: server, task: task }
   end
 
-  describe "TODO.add/1" do
+  describe "TODO.Server.add/1" do
     test "expected: a created task", context do
       response = TODO.Server.add context.server, context.task
 
@@ -21,7 +21,7 @@ defmodule TODO.ServerTest do
       assert Map.has_key? response, :created_at
     end
 
-    test "expected: a unchecked error for task already created", context do
+    test "expected: a error for task already created", context do
       TODO.Server.add context.server, context.task
       response = TODO.Server.add context.server, context.task
 
@@ -45,7 +45,7 @@ defmodule TODO.ServerTest do
     end
   end
 
-  describe "TODO.complete/1" do
+  describe "TODO.Server.complete/1" do
     test "expected: a updated task", context do
       id = TODO.Server.add(context.server, context.task) |> Map.fetch!(:id)
       response = TODO.Server.complete context.server, id
@@ -59,7 +59,7 @@ defmodule TODO.ServerTest do
       assert Map.fetch!(response, :completed) == true
     end
 
-    test "expected: a unchecked error for task already completed", context do
+    test "expected: a error for task already completed", context do
       id = TODO.Server.add(context.server, context.task) |> Map.fetch!(:id)
       TODO.Server.complete context.server, id
       response = TODO.Server.complete context.server, id
