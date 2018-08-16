@@ -8,7 +8,7 @@ defmodule TODO.Supervisor do
   @impl true
   def init(:ok) do
     children = [
-      { TODO.Server, name: TODO.Server }
+      {TODO.Server, name: TODO.Server}
     ]
     Supervisor.init children, strategy: :one_for_one
   end

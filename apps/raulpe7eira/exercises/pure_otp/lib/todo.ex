@@ -1,6 +1,7 @@
 defmodule TODO do
   use Application
 
+  @impl true
   def start(_type, _args) do
     TODO.Supervisor.start_link name: TODO.Supervisor
   end
