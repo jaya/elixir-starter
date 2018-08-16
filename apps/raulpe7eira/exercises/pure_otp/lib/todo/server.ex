@@ -30,7 +30,7 @@ defmodule TODO.Server do
   def handle_call({:add, %{title: title, completed: completed}}, _from, list) do
     response = case TODO.List.create_task(list, title, completed) do
       {:ok, created_task} -> render_response {:add, created_task}
-      {:error, _reason} = error -> error
+      {:error, reason} -> %{error: reason}
     end
 
     {:reply, response, list}
@@ -48,7 +48,7 @@ defmodule TODO.Server do
   def handle_call({:complete, id}, _from, list) do
     response = case TODO.List.complete_task(list, id) do
       {:ok, completed_task} -> render_response {:complete, completed_task}
-      {:error, _reason} = error -> error
+      {:error, reason} -> %{error: reason}
     end
 
     {:reply, response, list}
