@@ -1,2 +1,2 @@
 ExUnit.start()
-ExUnit.configure(trace: true)
+ExUnit.configure trace: true

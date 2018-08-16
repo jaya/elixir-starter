@@ -21,10 +21,12 @@ defmodule TODO.Server do
 
   ## Server API
 
+  @impl true
   def init(:ok) do
     {:ok, %{}}
   end
 
+  @impl true
   def handle_call({:add, %{title: title, completed: completed}}, _from, list) do
     case created?(list, title) do
       true -> 
@@ -35,10 +37,12 @@ defmodule TODO.Server do
     end 
   end
 
+  @impl true
   def handle_call(:list, _from, list) do
     {:reply, render_response({:list, Map.values(list)}), list}
   end
 
+  @impl true
   def handle_call({:complete, id}, _from, list) do
     case completed?(list, id) do
       true -> 

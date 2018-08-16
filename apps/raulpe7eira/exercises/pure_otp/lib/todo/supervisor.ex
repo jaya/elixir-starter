@@ -5,6 +5,7 @@ defmodule TODO.Supervisor do
     Supervisor.start_link __MODULE__, :ok, opts
   end
 
+  @impl true
   def init(:ok) do
     children = [
       { TODO.Server, name: TODO.Server }
