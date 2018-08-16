@@ -5,9 +5,9 @@ defmodule TODO.ServerTest do
 
   setup do
     server = start_supervised! TODO.Server
-    task = %{ completed: false, title: "tst-0" }
+    task = %{completed: false, title: "tst-0"}
 
-    %{ server: server, task: task }
+    %{server: server, task: task}
   end
 
   describe "TODO.Server.add/1" do
@@ -25,7 +25,7 @@ defmodule TODO.ServerTest do
       TODO.Server.add context.server, context.task
       response = TODO.Server.add context.server, context.task
 
-      assert response == %{ error: "task already created" }
+      assert response == %{error: "task already created"}
     end
   end
 
@@ -38,7 +38,7 @@ defmodule TODO.ServerTest do
 
     test "expected: a populated list", context do
       TODO.Server.add context.server, context.task
-      TODO.Server.add context.server, %{ context.task | title: "tst-1" }
+      TODO.Server.add context.server, %{context.task | title: "tst-1"}
       response = TODO.Server.list context.server
 
       assert length(response) == 2
@@ -47,7 +47,9 @@ defmodule TODO.ServerTest do
 
   describe "TODO.Server.complete/1" do
     test "expected: a updated task", context do
-      id = TODO.Server.add(context.server, context.task) |> Map.fetch!(:id)
+      id = TODO.Server.add(context.server, context.task)
+      |> Map.fetch!(:id)
+
       response = TODO.Server.complete context.server, id
 
       assert is_map response
@@ -60,11 +62,13 @@ defmodule TODO.ServerTest do
     end
 
     test "expected: a error for task already completed", context do
-      id = TODO.Server.add(context.server, context.task) |> Map.fetch!(:id)
+      id = TODO.Server.add(context.server, context.task)
+      |> Map.fetch!(:id)
+      
       TODO.Server.complete context.server, id
       response = TODO.Server.complete context.server, id
 
-      assert response == %{ error: "task already completed" }
+      assert response == %{error: "task already completed"}
     end
   end
 end

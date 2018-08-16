@@ -23,54 +23,38 @@ defmodule TODO.Server do
 
   @impl true
   def init(:ok) do
-    {:ok, %{}}
+    TODO.List.start_link([])
   end
 
   @impl true
   def handle_call({:add, %{title: title, completed: completed}}, _from, list) do
-    case created?(list, title) do
-      true -> 
-        {:reply, %{ error: "task already created" }, list}      
-      false ->
-        task = TODO.Task.create(title, completed)
-        {:reply, render_response({:add, task}), Map.put(list, task.id, task)}
-    end 
+    response = case TODO.List.create_task(list, title, completed) do
+      {:ok, created_task} -> render_response {:add, created_task}
+      {:error, _reason} = error -> error
+    end
+
+    {:reply, response, list}
   end
 
   @impl true
   def handle_call(:list, _from, list) do
-    {:reply, render_response({:list, Map.values(list)}), list}
+    tasks = TODO.List.tasks(list)
+    response = render_response {:list, tasks}
+
+    {:reply, response, list}
   end
 
   @impl true
   def handle_call({:complete, id}, _from, list) do
-    case completed?(list, id) do
-      true -> 
-        {:reply, %{ error: "task already completed" }, list}      
-      false ->      
-        {completed_task, updated_list} = Map.get_and_update(list, id, fn task ->
-          updated = TODO.Task.complete(task)
-          {updated, updated}
-        end)
-        {:reply, render_response({:complete, completed_task}), updated_list}
+    response = case TODO.List.complete_task(list, id) do
+      {:ok, completed_task} -> render_response {:complete, completed_task}
+      {:error, _reason} = error -> error
     end
+
+    {:reply, response, list}
   end
 
-  defp created?(list, title) do
-    list
-    |> Map.values
-    |> Enum.any?(fn task ->
-      Map.fetch!(task, :title) == title
-    end)
-  end
-
-  defp completed?(list, id) do
-    list
-    |> Map.values
-    |> Enum.find(fn task ->
-      Map.fetch!(task, :id) == id && Map.fetch!(task, :completed)
-    end) != nil
-  end
+  ## Response Render
 
   defp render_response({:add, task}) when is_map(task) do
     task

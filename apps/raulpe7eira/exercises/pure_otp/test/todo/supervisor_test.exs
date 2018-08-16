@@ -4,10 +4,10 @@ defmodule TODO.SupervisorTest do
   @moduletag :supervisor
 
   setup do
-    module = { TODO.Supervisor, name: TODO.Supervisor }
+    module = {TODO.Supervisor, name: TODO.Supervisor}
     supervisor = start_supervised! module
 
-    %{ supervisor: supervisor, module: module }
+    %{supervisor: supervisor, module: module}
   end
 
   describe "TODO.Supervisor.start_link/1" do
@@ -18,13 +18,13 @@ defmodule TODO.SupervisorTest do
     test "expected: a logger message, 'is already started'", context do
       response = start_supervised context.module
 
-      assert { :error, { :already_started, _pid } } = response
+      assert {:error, {:already_started, _pid}} = response
     end
   end
 
   describe "TODO.Supervisor[strategy: one_for_one]" do
     test "expected: the restarted server", context do
-      [{ _id, child, _type, _modules } | _tail] = Supervisor.which_children context.supervisor
+      [{_id, child, _type, _modules} | _tail] = Supervisor.which_children context.supervisor
 
       assert child == Process.whereis TODO.Server
 
