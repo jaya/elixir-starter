@@ -5,14 +5,14 @@ defmodule TODO.ServerTest do
 
   setup do
     server = start_supervised! TODO.Server
-    task = %{completed: false, title: "tst-0"}
+    params = %{completed: false, title: "tst-0"}
 
-    %{server: server, task: task}
+    %{server: server, params: params}
   end
 
   describe "TODO.Server.add/1" do
     test "expected: a created task", context do
-      response = TODO.Server.add context.server, context.task
+      response = TODO.Server.add context.server, context.params
 
       assert is_map response
       assert Map.has_key? response, :id
@@ -22,9 +22,9 @@ defmodule TODO.ServerTest do
       refute Map.has_key? response, :completed_at
     end
 
-    test "expected: a error for task already created", context do
-      TODO.Server.add context.server, context.task
-      response = TODO.Server.add context.server, context.task
+    test "expected: a error message w/ 'task already created'", context do
+      TODO.Server.add context.server, context.params
+      response = TODO.Server.add context.server, context.params
 
       assert response == %{error: "task already created"}
     end
@@ -39,8 +39,8 @@ defmodule TODO.ServerTest do
     end
 
     test "expected: a populated list", context do
-      TODO.Server.add context.server, context.task
-      TODO.Server.add context.server, %{context.task | title: "tst-1"}
+      TODO.Server.add context.server, context.params
+      TODO.Server.add context.server, %{context.params | title: "tst-1"}
       response = TODO.Server.list context.server
 
       assert is_list response
@@ -57,10 +57,8 @@ defmodule TODO.ServerTest do
   end
 
   describe "TODO.Server.complete/1" do
-    test "expected: a updated task", context do
-      id = TODO.Server.add(context.server, context.task)
-      |> Map.fetch!(:id)
-
+    test "expected: a completed task", context do
+      id = TODO.Server.add(context.server, context.params).id
       response = TODO.Server.complete context.server, id
 
       assert is_map response
@@ -69,13 +67,11 @@ defmodule TODO.ServerTest do
       assert Map.has_key? response, :completed
       assert Map.has_key? response, :created_at
       assert Map.has_key? response, :completed_at
-      assert Map.fetch!(response, :completed) == true
+      assert response.completed == true
     end
 
-    test "expected: a error for task already completed", context do
-      id = TODO.Server.add(context.server, context.task)
-      |> Map.fetch!(:id)
-      
+    test "expected: a error message w/ 'task already completed'", context do
+      id = TODO.Server.add(context.server, context.params).id
       TODO.Server.complete context.server, id
       response = TODO.Server.complete context.server, id
 

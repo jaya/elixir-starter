@@ -11,11 +11,11 @@ defmodule TODO.SupervisorTest do
   end
 
   describe "TODO.Supervisor.start_link/1" do
-    test "expected: a logger message, 'is started'", context do
+    test "expected: a pid", context do
       assert is_pid context.supervisor
     end
 
-    test "expected: a logger message, 'is already started'", context do
+    test "expected: a error message w/ ':already_started'", context do
       response = start_supervised context.module
 
       assert {:error, {:already_started, _pid}} = response
@@ -23,7 +23,7 @@ defmodule TODO.SupervisorTest do
   end
 
   describe "TODO.Supervisor[strategy: one_for_one]" do
-    test "expected: the restarted server", context do
+    test "expected: the restarted server when it to die", context do
       [{_id, child, _type, _modules} | _tail] = Supervisor.which_children context.supervisor
 
       assert child == Process.whereis TODO.Server
