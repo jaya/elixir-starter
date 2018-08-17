@@ -22,7 +22,7 @@ defmodule TODO.ServerTest do
       refute Map.has_key? response, :completed_at
     end
 
-    test "expected: a error for task already created", context do
+    test "expected: a error message w/ 'task already created'", context do
       TODO.Server.add context.server, context.task
       response = TODO.Server.add context.server, context.task
 
@@ -57,7 +57,7 @@ defmodule TODO.ServerTest do
   end
 
   describe "TODO.Server.complete/1" do
-    test "expected: a updated task", context do
+    test "expected: a completed task", context do
       id = TODO.Server.add(context.server, context.task)
       |> Map.fetch!(:id)
 
@@ -72,7 +72,7 @@ defmodule TODO.ServerTest do
       assert Map.fetch!(response, :completed) == true
     end
 
-    test "expected: a error for task already completed", context do
+    test "expected: a error message w/ 'task already completed'", context do
       id = TODO.Server.add(context.server, context.task)
       |> Map.fetch!(:id)
       
