@@ -10,12 +10,14 @@ defmodule TODO.List do
   end
 
   def create_task(list, title, completed) do
-    case created?(list, title) do
-      false ->
-        created_task = TODO.Task.create(title, completed)
-        Agent.update list, &Map.put(&1, created_task.id, created_task)
-        {:ok, created_task}
-      true -> {:error, "task already created"}
+    Agent.get_and_update list, fn tasks ->
+      task = Enum.find(Map.values(tasks), &(&1.title == title))
+      if task != nil do
+        {{:error, "task already created"}, tasks}
+      else
+        created_task = TODO.Task.create title, completed
+        {{:ok, created_task}, Map.put(tasks, created_task.id, created_task)}
+      end
     end
   end
 
@@ -25,29 +27,14 @@ defmodule TODO.List do
   end
 
   def complete_task(list, id) do
-    case completed?(list, id) do
-      false ->
-        task = Agent.get list, &Map.get(&1, id)
+    Agent.get_and_update list, fn tasks ->
+      task = Map.get tasks, id
+      if task.completed  do
+        {{:error, "task already completed"}, tasks}
+      else
         completed_task = TODO.Task.complete task
-        Agent.update list, &Map.put(&1, task.id, completed_task)
-        {:ok, completed_task}
-      true -> {:error, "task already completed"}
-    end
-  end
-
-  defp created?(list, title) do
-    Agent.get list, fn task ->
-      task
-      |> Map.values
-      |> Enum.any?(fn task -> task.title == title end)
-    end
-  end
-
-  defp completed?(list, id) do
-    Agent.get list, fn task ->
-      task
-      |> Map.get(id)
-      |> (&(&1.completed)).()
+        {{:ok, completed_task}, Map.put(tasks, id, completed_task)}
+      end
     end
   end
 end
