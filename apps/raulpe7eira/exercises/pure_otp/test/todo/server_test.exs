@@ -34,7 +34,8 @@ defmodule TODO.ServerTest do
     test "expected: a empty list", context do
       response = TODO.Server.list context.server
 
-      assert response == []
+      assert is_list response
+      assert length(response) == 0
     end
 
     test "expected: a populated list", context do
@@ -42,8 +43,8 @@ defmodule TODO.ServerTest do
       TODO.Server.add context.server, %{context.task | title: "tst-1"}
       response = TODO.Server.list context.server
 
-      assert length(response) == 2
       assert is_list response
+      assert length(response) == 2
       for element <- response do
         assert is_map element
         assert Map.has_key? element, :id
