@@ -6,8 +6,8 @@ defmodule TODO do
     TODO.Supervisor.start_link name: TODO.Supervisor
   end
 
-  def add(task) do
-    TODO.Server.add TODO.Server, task
+  def add(params) do
+    TODO.Server.add TODO.Server, params
   end
 
   def list() do

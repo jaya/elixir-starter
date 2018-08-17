@@ -7,8 +7,8 @@ defmodule TODO.Server do
     GenServer.start_link __MODULE__, :ok, opts
   end
 
-  def add(server, task) do
-    GenServer.call server, {:add, task}
+  def add(server, params) do
+    GenServer.call server, {:add, params}
   end
 
   def list(server) do
@@ -60,8 +60,8 @@ defmodule TODO.Server do
     task
     |> filter_by_keys([:completed_at])
   end
-  defp render_response({:list, todo}) when is_list(todo) do
-    todo
+  defp render_response({:list, tasks}) when is_list(tasks) do
+    tasks
     |> Enum.map(&(filter_by_keys(&1, [:created_at, :completed_at])))
   end
   defp render_response({:complete, task}) when is_map(task) do
