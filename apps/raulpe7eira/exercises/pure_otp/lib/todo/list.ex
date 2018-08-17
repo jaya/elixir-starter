@@ -11,7 +11,7 @@ defmodule TODO.List do
 
   def create_task(list, title, completed) do
     Agent.get_and_update list, fn tasks ->
-      task = Enum.find(Map.values(tasks), &(&1.title == title))
+      task = Enum.find Map.values(tasks), &(&1.title == title)
       if task != nil do
         {{:error, "task already created"}, tasks}
       else
