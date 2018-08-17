@@ -19,6 +19,7 @@ defmodule TODO.ServerTest do
       assert Map.has_key? response, :title
       assert Map.has_key? response, :completed
       assert Map.has_key? response, :created_at
+      refute Map.has_key? response, :completed_at
     end
 
     test "expected: a error for task already created", context do
@@ -33,7 +34,8 @@ defmodule TODO.ServerTest do
     test "expected: a empty list", context do
       response = TODO.Server.list context.server
 
-      assert response == []
+      assert is_list response
+      assert length(response) == 0
     end
 
     test "expected: a populated list", context do
@@ -41,7 +43,16 @@ defmodule TODO.ServerTest do
       TODO.Server.add context.server, %{context.task | title: "tst-1"}
       response = TODO.Server.list context.server
 
+      assert is_list response
       assert length(response) == 2
+      for element <- response do
+        assert is_map element
+        assert Map.has_key? element, :id
+        assert Map.has_key? element, :title
+        assert Map.has_key? element, :completed
+        refute Map.has_key? element, :created_at
+        refute Map.has_key? element, :completed_at
+      end
     end
   end
 
