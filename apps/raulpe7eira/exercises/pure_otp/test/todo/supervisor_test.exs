@@ -22,7 +22,7 @@ defmodule TODO.SupervisorTest do
     end
   end
 
-  describe "TODO.Supervisor [strategy: one_for_one]" do
+  describe "TODO.Supervisor[strategy: one_for_one]" do
     test "expected: the restarted server when it to die", context do
       [{_id, child, _type, _modules} | _tail] = Supervisor.which_children context.supervisor
 
