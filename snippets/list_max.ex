@@ -93,6 +93,8 @@ defmodule Lists do
   """
   Em uma lista composta de um elemento (head) e outra lista (tail),
   o máximo elemento é o maior entre o head e o máximo do tail.
+
+  (Podemos obviamente otimizar o código calculando list_max2 só uma vez)
   """
   def list_max2([h|t]) do
     if h > list_max2(t) do
@@ -101,4 +103,30 @@ defmodule Lists do
       list_max2(t)
     end
   end
+
+  """
+  Em Haskell, o código seria ainda mais sucinto:
+  
+  max :: [Int] -> Int
+  max [x] = x
+  max (x:xs) = if x > max xs then x else max xs
+
+  Em Ocaml também:
+
+  let rec max list =
+    match list with
+    | (x :: xs) -> if x > max xs then x else max xs
+    | [x] -> x
+
+  E com a pequena otimização (Haskell):
+
+  max :: [Int] -> Int
+  max [x] = x
+  max (x:xs) =
+    let m = max xs in
+      if x > m then
+        x
+      else
+        m
+  """
 end
