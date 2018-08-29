@@ -18,7 +18,7 @@
 
 - [x] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
 - [x] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
-- [ ] [Optional] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
+- [x] [Optional] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 
 5) OTP Exercices (WIP)
 
@@ -26,6 +26,6 @@
 
 6) Phoenix Course
 
-- [ ] Perform the course: https://www.udemy.com/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/
+- [x] Perform the course: https://www.udemy.com/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/
 
 7) Final Project
