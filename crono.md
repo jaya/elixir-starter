@@ -14,7 +14,7 @@
 3) Pure processes exercices
 
     - [x] Do the exercise using processes: <https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md>
-        > **output |>** [./apps/raulpe7eira/exercises/pure_processes](../../../tree/coaching/raulpe7eira/apps/raulpe7eira/exercises/pure_processes) **|>** #21
+        > **output |>** [./apps/raulpe7eira/exercises/pure_processes](../../../tree/coaching/raulpe7eira/apps/raulpe7eira/exercises/pure_processes) **|>** [#21](../../../pull/21)
 
 4) MIX & OTP
 
@@ -27,7 +27,7 @@
 5) Pure OTP exercices
 
     - [x] Do the exercise using OTP: <https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md>
-        > **output |>** [./apps/raulpe7eira/exercises/pure_otp](../../../tree/coaching/raulpe7eira/apps/raulpe7eira/exercises/pure_otp) **|>** #22
+        > **output |>** [./apps/raulpe7eira/exercises/pure_otp](../../../tree/coaching/raulpe7eira/apps/raulpe7eira/exercises/pure_otp) **|>** [#22](../../../pull/22)
 
 6) Phoenix course
 
