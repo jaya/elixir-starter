@@ -11,7 +11,7 @@
 - [ ] Do the koans 1-15 => https://github.com/elixirkoans/elixir-koans
 
 
-3) Pure OTP Exercices (WIP)
+3) Pure Processes Exercices 
 
 - [ ] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
 
@@ -19,13 +19,14 @@
 
 - [ ] Do Examples from 1 to 4 => https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
 - [ ] Do the koans 16-18 => https://github.com/elixirkoans/elixir-koans
-- [ ] Do exercise 1, 2 => https://github.com/jaya/elixir-starter/blob/master/exercices.md
-- [ ] Do Examples: https://elixir-lang.org/getting-started/processes.html
-- [ ] Do examples: https://elixir-lang.org/getting-started/mix-otp/agent.html
-- [ ] Do the koans 15-17 => https://github.com/elixirkoans/elixir-koans
+- [ ] [Optional] Watch: https://www.youtube.com/playlist?list=PLZZkJeUxu6QkFsqar5pIqaLoqVnBycDoU
 
-5) Phoenix Course
+5) OTP Exercices (WIP)
+
+- [ ] Do the exercise using OTP: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
+
+6) Phoenix Course
 
 - [ ] Perform the course: https://www.udemy.com/the-complete-elixir-and-phoenix-bootcamp-and-tutorial/
 
-6) Final Project
+7) Final Project
