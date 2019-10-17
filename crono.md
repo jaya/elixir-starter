@@ -2,18 +2,17 @@
 
 1) Documentary
 
-- [ ] Watch http://doc.honeypot.io/elixir-documentary-2018/
+- [x] Watch http://doc.honeypot.io/elixir-documentary-2018/
 
 2) Getting started
 
-- [ ] Do all examples from 1 to 15 => https://elixir-lang.org/getting-started/introduction.html
+- [x] Do all examples from 1 to 15 => https://elixir-lang.org/getting-started/introduction.html
 
-- [ ] Do the koans 1-15 => https://github.com/elixirkoans/elixir-koans
-
+- [x] Do the koans 1-15 => https://github.com/elixirkoans/elixir-koans
 
 3) Pure Processes Exercices 
 
-- [ ] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
+- [x] Do the exercise: https://github.com/jaya/elixir-starter/blob/master/pure_otp_exercise.md
 
 4) MIX & OTP
 
